@@ -1,26 +1,26 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.model;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 
 @Entity
 @Table(name="user_table")
 public class User {
 
-    public User(Integer userId, String name, String lastname, String email, String adress, String password, String cvu, String userWallet) {
-        this.userId = userId;
+    public User(Integer id, String name, String lastname, String email, String address, String password, String cvu, String userWallet) {
+        this.id = id;
         this.name = name;
         this.lastname = lastname;
         this.email = email;
-        this.adress = adress;
+        this.address = address;
         this.password = password;
         this.cvu = cvu;
         this.userWallet = userWallet;
     }
 
-    @Id
+    public User(){  }
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userId;
+    private Integer id;
 
     @Column(name="user_name", nullable = false, length = 30)
     private String name;
@@ -28,11 +28,12 @@ public class User {
     @Column(name="user_last_name", nullable = false, length = 30)
     private String lastname;
 
+    @Id
     @Column(name="user_email",nullable = false,length = 80)
     private String email;
 
-    @Column(name="user_adress", nullable = false, length = 30)
-    private String adress;
+    @Column(name="user_address", nullable = false, length = 30)
+    private String address;
 
     @Column(name="user_password", nullable = false, length = 20)
     private String password;
@@ -43,12 +44,12 @@ public class User {
     @Column(name="user_wallet",nullable = false, length = 8)
     private String userWallet;
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -75,12 +76,12 @@ public class User {
         this.email = email;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String adress) {
+        this.address = adress;
     }
 
     public String getPassword() {

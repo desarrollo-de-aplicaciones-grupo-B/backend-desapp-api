@@ -1,4 +1,4 @@
-package ar.edu.unq.desapp.grupoB.backenddesappapi.model.Swagger;
+package ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -15,7 +15,9 @@ public class UserService {
     private IUserRepository userRepository;
 
     @Transactional
-    public User save(User user){return this.userRepository.save(user);}
+    public User save(User user){
+        return this.userRepository.save(user);
+    }
 
     @Transactional
     public User findByID(Integer id) {
@@ -28,9 +30,21 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteById(Integer id) { this.userRepository.deleteById(id); }
+    public void deleteById(Integer id) {
+        this.userRepository.deleteById(id);
+    }
 
     @Transactional
-    public void updateUser( User user){ userRepository.save(user); }
+    public void updateUser(User userUpdate, Integer userId){
+        Optional<User> userFound = userRepository.findById(userId);
+
+        User user = userFound.get();
+        user.setName(userUpdate.getName());
+        user.setLastname(userUpdate.getLastname());
+        user.setEmail(userUpdate.getEmail());
+        user.setAddress(userUpdate.getAddress());
+        user.setCvu(userUpdate.getCvu());
+        user.setUserWallet(userUpdate.getUserWallet());
+    }
 
 }

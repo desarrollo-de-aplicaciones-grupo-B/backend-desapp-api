@@ -1,3 +1,5 @@
+##18-04-2022
+Agrego Funcionalidad CRUD en UserController
 
 ##12-04-2022 Feature Swagger
 

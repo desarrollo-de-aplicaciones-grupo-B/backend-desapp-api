@@ -6,6 +6,8 @@ import ar.edu.unq.desapp.grupoB.backenddesappapi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +24,9 @@ public class UserRestService {
     }
 
     @PostMapping
-    public void saveUser(@RequestBody User user){userService.save(user); }
+    public void saveUser(@RequestBody User user){
+        userService.save(user);
+    }
 
     @GetMapping(value = "/{id}")
     public User getById(@PathVariable("id") Integer id){
@@ -34,9 +38,9 @@ public class UserRestService {
         userService.deleteById(id);
     }
 
-    @PutMapping
-    public void updateUser(@RequestBody User user){
-        userService.updateUser(user);
+    @PostMapping(value = "/{id}")
+    public void updateUser(@RequestBody User user, @PathVariable ("id") Integer id){
+        userService.updateUser(user,id);
     }
 
 }

@@ -4,8 +4,59 @@ import javax.persistence.*;
 import java.sql.Time;
 
 @Entity
-@Table
+@Table(name = "trading_audit")
 public class TradingAudit {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer tradingAuditId;
+
+    @Column(name = "hour_transaction",nullable = false)
+    private Time hour;
+
+    @Column(name = "cryptoId",nullable = false)
+    private Integer cryptoId;
+
+    @Column(name = "cryptoAmount",nullable = false)
+    private Double cryptoAmount;
+
+    @Column(name = "cotization",nullable = false)
+    private Double cotization;
+
+    @Column(name = "transactionAmount",nullable = false)
+    private Double transactionAmount;
+
+    @Column(name = "user_name",nullable = false)
+    private String userName; //nombre-apellido
+
+    @Column(name = "operationAmount",nullable = false)
+    private String operationAmount; //preguntar que es
+
+    @Column(name = "reputation",nullable = false)
+    private Double reputation;
+
+    @Column(name = "shippingAddress",nullable = false)
+    private String shippingAddress;
+
+    @Column(name = "actionType",nullable = false)
+    private Integer actionType;
+
+    public TradingAudit(Integer tradingAuditId, Time hour, Integer cryptoId, Double cryptoAmount, Double cotization, Double transactionAmount, String userName, String operationAmount, Double reputation, String shippingAddress, Integer actionType) {
+        this.tradingAuditId = tradingAuditId;
+        this.hour = hour;
+        this.cryptoId = cryptoId;
+        this.cryptoAmount = cryptoAmount;
+        this.cotization = cotization;
+        this.transactionAmount = transactionAmount;
+        this.userName = userName;
+        this.operationAmount = operationAmount;
+        this.reputation = reputation;
+        this.shippingAddress = shippingAddress;
+        this.actionType = actionType;
+    }
+
+    public TradingAudit() {
+    }
 
     public Integer getTradingAuditId() {
         return tradingAuditId;
@@ -56,11 +107,11 @@ public class TradingAudit {
     }
 
     public String getUser() {
-        return user;
+        return userName;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUser(String userName) {
+        this.userName = userName;
     }
 
     public String getOperationAmount() {
@@ -94,53 +145,5 @@ public class TradingAudit {
     public void setActionType(Integer actionType) {
         this.actionType = actionType;
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer tradingAuditId;
-
-    @Column(name = "hour",nullable = false)
-    private Time hour;
-
-    @Column(name = "cryptoId",nullable = false)
-    private Integer cryptoId;
-
-    @Column(name = "cryptoAmount",nullable = false)
-    private Double cryptoAmount;
-
-    @Column(name = "cotization",nullable = false)
-    private Double cotization;
-
-    @Column(name = "transactionAmount",nullable = false)
-    private Double transactionAmount;
-
-    @Column(name = "user",nullable = false)
-    private String user; //nombre-apellido
-
-    @Column(name = "operationAmount",nullable = false)
-    private String operationAmount; //preguntar que es
-
-    @Column(name = "reputation",nullable = false)
-    private Double reputation;
-
-    @Column(name = "shippingAddress",nullable = false)
-    private String shippingAddress;
-
-    public TradingAudit(Integer tradingAuditId, Time hour, Integer cryptoId, Double cryptoAmount, Double cotization, Double transactionAmount, String user, String operationAmount, Double reputation, String shippingAddress, Integer actionType) {
-        this.tradingAuditId = tradingAuditId;
-        this.hour = hour;
-        this.cryptoId = cryptoId;
-        this.cryptoAmount = cryptoAmount;
-        this.cotization = cotization;
-        this.transactionAmount = transactionAmount;
-        this.user = user;
-        this.operationAmount = operationAmount;
-        this.reputation = reputation;
-        this.shippingAddress = shippingAddress;
-        this.actionType = actionType;
-    }
-
-    @Column(name = "actionType",nullable = false)
-    private Integer actionType;
 
 }

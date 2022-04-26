@@ -1,9 +1,12 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.webservices;
 
 
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.UserResponseDTO;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.UserUpdateDTO;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -19,8 +22,8 @@ public class UserRestService {
     private UserService userService;
 
     @GetMapping
-    public List<User> getAll(){
-        return userService.findAll();
+    public ResponseEntity<?> getAll(){
+        return ResponseEntity.ok(userService.findAll());
     }
 
     @PostMapping
@@ -29,8 +32,8 @@ public class UserRestService {
     }
 
     @GetMapping(value = "/{id}")
-    public User getById(@PathVariable("id") Integer id){
-        return userService.findByID(id);
+    public ResponseEntity<?> getById(@PathVariable("id") Integer id){
+        return ResponseEntity.ok(userService.findByID(id));
     }
 
     @DeleteMapping(value = "/{id}")
@@ -39,8 +42,8 @@ public class UserRestService {
     }
 
     @PostMapping(value = "/{id}")
-    public void updateUser(@RequestBody User user, @PathVariable ("id") Integer id){
-        userService.updateUser(user,id);
+    public void updateUser(@RequestBody User userUpdateDTO, @PathVariable ("id") Integer id){
+        userService.updateUser(userUpdateDTO,id);
     }
 
 }

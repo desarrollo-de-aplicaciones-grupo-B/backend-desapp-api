@@ -21,7 +21,7 @@ public class CryptocurrencyRestService {
     }
 
     @PostMapping
-    public void saveUser(@RequestBody Cryptocurrency crypto){
+    public void save(@RequestBody Cryptocurrency crypto){
         cryptocurrencyService.save(crypto);
     }
 
@@ -36,7 +36,7 @@ public class CryptocurrencyRestService {
     }
 
     @PutMapping()
-    public void updateUser(@RequestBody Cryptocurrency crypto){
+    public void update(@RequestBody Cryptocurrency crypto){
         cryptocurrencyService.updateCrypto(crypto);
     }
 }

@@ -4,11 +4,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="trading")
-public class Tranding {
+public class Trading {
 
-    public Tranding(){
-
-    }
 
     public Integer getIdOperation() {
         return idOperation;
@@ -58,15 +55,15 @@ public class Tranding {
         this.userId = userId;
     }
 
-    public Integer getOperationType() {
+    public OperationType getOperationType() {
         return operationType;
     }
 
-    public void setOperationType(Integer operationType) {
+    public void setOperationType(OperationType operationType) {
         this.operationType = operationType;
     }
 
-    public Tranding(Integer idOperation, Integer cryptoId, Double cryptoAmount, Double cotization, Double operationAmount, Integer userId, Integer operationType) {
+    public Trading(Integer idOperation, Integer cryptoId, Double cryptoAmount, Double cotization, Double operationAmount, Integer userId, OperationType operationType) {
         this.idOperation = idOperation;
         this.cryptoId = cryptoId;
         this.cryptoAmount = cryptoAmount;
@@ -75,6 +72,8 @@ public class Tranding {
         this.userId = userId;
         this.operationType = operationType;
     }
+
+    public Trading(){};
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -95,6 +94,7 @@ public class Tranding {
     @Column(name = "userId", nullable = false)
     private Integer userId;
 
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "operationType", nullable = false, length = 1)
-    private Integer operationType;
+    private OperationType operationType;
 }

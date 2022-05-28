@@ -2,6 +2,11 @@
 
 Todos los cambios del proyecto son escritos en este documento siguiendo el formato "Dia - Tipo de aporte al proyecto - Nombre de branch"
 
+## 28-05-2022 Feature CRUD-Intecion-CompraVenta
+
+Agrego clase enum "OperationType" que simboliza el tipo de la operacion de la transaccion, si es COMPRA o VENTA.
+Agrego operaciones cracion, actualizacion, borrado y obtencion de intencion de compra venta (Trading)
+
 ## 28-05-2022 Feature CRUD-Criptoactivos
 
 Agrego las operaciones de cracion, actualizacion, borrado y obtencion de criptoactivos

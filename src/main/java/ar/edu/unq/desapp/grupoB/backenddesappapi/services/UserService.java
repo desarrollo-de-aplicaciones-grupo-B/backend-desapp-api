@@ -46,5 +46,4 @@ public class UserService {
         user.setCvu(userUpdate.getCvu());
         user.setUserWallet(userUpdate.getUserWallet());
     }
-
 }

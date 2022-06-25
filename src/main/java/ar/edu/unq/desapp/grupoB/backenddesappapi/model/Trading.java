@@ -74,14 +74,12 @@ public class Trading {
         return transferConfirmed;
     }
 
-    public Trading(Integer idOperation, Integer cryptoId, Double cryptoAmount, Double cotization, Double operationAmount, Integer sellerId, OperationType operationType) {
-        this.idOperation = idOperation;
+    public Trading(Integer cryptoId, Double cryptoAmount, Double cotization, Double operationAmount, Integer sellerId) {
         this.cryptoId = cryptoId;
         this.cryptoAmount = cryptoAmount;
         this.cotization = cotization;
         this.operationAmount = operationAmount;
         this.sellerId = sellerId;
-        this.operationType = operationType;
         creationDate= LocalDateTime.now();
         transferConfirmed = false;
     }

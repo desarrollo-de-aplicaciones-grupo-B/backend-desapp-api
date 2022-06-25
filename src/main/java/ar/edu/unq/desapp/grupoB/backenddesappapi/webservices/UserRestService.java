@@ -28,8 +28,8 @@ public class UserRestService {
         userService.save(user);
     }
 
-    @GetMapping
-    public User getByUserName(@PathVariable("username")String username){ return userService.findByUsername(username); }
+    @GetMapping(value = "/{username}")
+    public User getUserByName(@RequestParam(value = "username")String username){ return userService.findUserByName(username); }
 
     @GetMapping(value = "/{id}")
     public User getById(@PathVariable("id") Integer id){
@@ -45,5 +45,4 @@ public class UserRestService {
     public void updateUser(@RequestBody User user, @PathVariable ("id") Integer id){
         userService.updateUser(user,id);
     }
-
 }

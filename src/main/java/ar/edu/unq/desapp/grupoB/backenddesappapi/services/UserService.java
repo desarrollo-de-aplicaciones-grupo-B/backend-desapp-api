@@ -47,7 +47,7 @@ public class UserService {
         user.setUserWallet(userUpdate.getUserWallet());
     }
 
-    public User findByUsername(String username) {
-        return this.userRepository.findByUsername(username).get();
-    }
+    @Transactional
+    public User findUserByName(String username) { return this.userRepository.findUserByName(username);}
+
 }

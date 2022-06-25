@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.grupoB.backenddesappapi.repositories;
 
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,5 +15,8 @@ public interface IUserRepository extends CrudRepository<User, Integer> {
     Optional<User> findById(Integer id);
 
     List<User> findAll();
+
+    @Query(value = "SELECT * FROM user_table WHERE user_name = ?1", nativeQuery = true)
+    Optional<User> findByUsername(String username);
 
 }

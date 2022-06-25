@@ -28,6 +28,9 @@ public class UserRestService {
         userService.save(user);
     }
 
+    @GetMapping
+    public User getByUserName(@PathVariable("username")String username){ return userService.findByUsername(username); }
+
     @GetMapping(value = "/{id}")
     public User getById(@PathVariable("id") Integer id){
         return userService.findByID(id);

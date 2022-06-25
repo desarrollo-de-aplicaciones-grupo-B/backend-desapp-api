@@ -46,4 +46,8 @@ public class UserService {
         user.setCvu(userUpdate.getCvu());
         user.setUserWallet(userUpdate.getUserWallet());
     }
+
+    public User findByUsername(String username) {
+        return this.userRepository.findByUsername(username).get();
+    }
 }

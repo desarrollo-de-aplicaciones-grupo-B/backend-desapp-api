@@ -1,16 +1,18 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.webservices;
 
 import ar.edu.unq.desapp.grupoB.backenddesappapi.repositories.IUserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-@EnableWebSecurity
-public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+
+public class PruebaSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private IUserRepository userRepo;
 
-    public WebSecurityConfiguration(IUserRepository userRepo) {
+    public PruebaSecurityConfiguration(IUserRepository userRepo) {
         this.userRepo = userRepo;
     }
 

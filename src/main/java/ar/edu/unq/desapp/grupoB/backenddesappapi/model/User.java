@@ -56,13 +56,13 @@ public class User {
     @Column(name="user_wallet",nullable = false, length = 8)
     private String userWallet;
 
-    @Column(name="user_reputation", nullable = false)
+    @Column(name="user_reputation")
     private Integer reputation;
 
-    @Column(name = "successful_operations", nullable = false)
+    @Column(name = "successful_operations")
     private Integer successfulOperations;
 
-    @Column(name = "total_operations",nullable = false)
+    @Column(name = "total_operations")
     private Integer totalOperations;
 
     public Integer getTotalOperations() {

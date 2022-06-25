@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.model;
 
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.WrongEmailFormatException;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.services.TradingService;
 
 import javax.persistence.*;
 
@@ -151,6 +152,11 @@ public class User {
 
     public void setUserWallet(String userWallet) {
         this.userWallet = userWallet;
+    }
+
+    public void openTransaction(Integer cryptoId, Double cryptoAmount, Double cotization, Double operationAmount){
+        TradingService service = new TradingService();
+        service.save(new Trading(cryptoId,cryptoAmount,cotization, operationAmount, this.getId()));
     }
 
 }

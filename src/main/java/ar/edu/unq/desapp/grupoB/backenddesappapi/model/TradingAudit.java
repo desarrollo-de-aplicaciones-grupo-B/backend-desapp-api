@@ -26,8 +26,11 @@ public class TradingAudit {
     @Column(name = "transactionAmount",nullable = false)
     private Double transactionAmount;
 
-    @Column(name = "user_audit",nullable = false)
-    private String user; //nombre-apellido
+    @Column(name = "seller_audit",nullable = false)
+    private String seller; //nombre-apellido
+
+    @Column(name = "buyer_audit",nullable = false)
+    private String buyer;
 
     @Column(name = "operationAmount",nullable = false)
     private String operationAmount; //preguntar que es
@@ -38,14 +41,15 @@ public class TradingAudit {
     @Column(name = "shippingAddress",nullable = false)
     private String shippingAddress;
 
-    public TradingAudit(Integer tradingAuditId, Time hour, Integer cryptoId, Double cryptoAmount, Double cotization, Double transactionAmount, String user, String operationAmount, Double reputation, String shippingAddress, Integer actionType) {
+    public TradingAudit(Integer tradingAuditId, Time hour, Integer cryptoId, Double cryptoAmount, Double cotization, Double transactionAmount, String seller, String buyer, String operationAmount, Double reputation, String shippingAddress, Integer actionType) {
         this.tradingAuditId = tradingAuditId;
         this.hour = hour;
         this.cryptoId = cryptoId;
         this.cryptoAmount = cryptoAmount;
         this.cotization = cotization;
         this.transactionAmount = transactionAmount;
-        this.user = user;
+        this.seller = seller;
+        this.buyer = buyer;
         this.operationAmount = operationAmount;
         this.reputation = reputation;
         this.shippingAddress = shippingAddress;
@@ -107,12 +111,20 @@ public class TradingAudit {
         this.transactionAmount = transactionAmount;
     }
 
-    public String getUser() {
-        return user;
+    public String getSeller() {
+        return seller;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setSeller(String seller) {
+        this.seller = seller;
+    }
+
+    public String getBuyer() {
+        return buyer;
+    }
+
+    public void setBuyer(String buyer) {
+        this.buyer = buyer;
     }
 
     public String getOperationAmount() {

@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.model;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="trading")
@@ -43,6 +44,8 @@ public class Trading {
         return operationAmount;
     }
 
+    public LocalDateTime getCreationDate() { return creationDate; }
+
     public void setOperationAmount(Double operationAmount) {
         this.operationAmount = operationAmount;
     }
@@ -73,7 +76,7 @@ public class Trading {
         this.operationType = operationType;
     }
 
-    public Trading(){};
+    public Trading(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -97,4 +100,7 @@ public class Trading {
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "operationType", nullable = false, length = 1)
     private OperationType operationType;
+
+    @Column(columnDefinition = "TIMESTAMP", name="creation_date")
+    private LocalDateTime creationDate;
 }

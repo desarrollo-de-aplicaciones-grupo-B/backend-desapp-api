@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.webservices;
 
 
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.TradingUserDTO;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Trading;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.TradingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +16,14 @@ public class TradingRestService {
     @Autowired
     private TradingService tradingService;
 
-    @GetMapping
-    public List<Trading> getAll(){
-        return tradingService.findAll();
+    @GetMapping("/{userId}")
+    public List<TradingUserDTO> getUserTradings(@PathVariable("userId") Integer userId){
+        return tradingService.getAllTradingUserDTO(userId);
     }
 
     @PostMapping
     public void save(@RequestBody Trading trading){
         tradingService.save(trading);
-    }
-
-    @GetMapping(value = "/{id}")
-    public Trading getById(@PathVariable("id") Integer id){
-        return tradingService.findByID(id);
     }
 
     @DeleteMapping(value = "/{id}")

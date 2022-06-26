@@ -103,7 +103,7 @@ public class Trading {
     @Column(name = "operationAmount", nullable = false)
     private Double operationAmount;
 
-    @Column(name = "sellerId", nullable = false)
+    @Column(name = "sellerId")
     private Integer sellerId;
 
 

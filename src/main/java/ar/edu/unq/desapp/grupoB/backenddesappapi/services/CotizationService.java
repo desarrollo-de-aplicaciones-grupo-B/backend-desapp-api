@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.services;
 
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Cotization;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.OutOfRangeCotizationException;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.repositories.ICotizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,5 +47,20 @@ public class CotizationService {
     public boolean cotizationIsOK(Integer cryptoId, Double tradingCotization) {
         Optional<Cotization> systemCotization = findById(cryptoId);
         return systemCotization.filter(cotization -> (tradingCotization.equals(cotization.getPriceCotization()))).isPresent();
+    }
+
+    public void checkPriceMargin(Integer cryptoId, Double cotization) throws OutOfRangeCotizationException {
+        Optional<Cotization> systemCotization = findById(cryptoId);
+        if(systemCotization.isPresent()){
+            Double margin = 5 * systemCotization.get().getPriceCotization() / 100;
+            Double min = systemCotization.get().getPriceCotization() - margin;
+            Double max = systemCotization.get().getPriceCotization() + margin;
+            if(cotization < min){
+                throw new OutOfRangeCotizationException("The price is below system cotization by more than 5%");
+            }
+            if(cotization > max){
+                throw new OutOfRangeCotizationException("The price is above system cotization by more than 5%");
+            }
+        }
     }
 }

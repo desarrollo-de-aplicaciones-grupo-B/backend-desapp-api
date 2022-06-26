@@ -43,6 +43,8 @@ public class CotizationService {
         return this.cotizationRepository.findLast24HoursCotizations(id);
     }
 
-
-
+    public boolean cotizationIsOK(Integer cryptoId, Double tradingCotization) {
+        Optional<Cotization> systemCotization = findById(cryptoId);
+        return systemCotization.filter(cotization -> (tradingCotization.equals(cotization.getPriceCotization()))).isPresent();
+    }
 }

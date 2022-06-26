@@ -16,25 +16,8 @@ public class CryptocurrencyService {
     private ICryptocurrencyRepository cryptocurrencyRepository;
 
     @Transactional
-    public Cryptocurrency save(Cryptocurrency crypto){
-        return this.cryptocurrencyRepository.save(crypto);
-    }
-
-    @Transactional
-    public Cryptocurrency findByID(Integer id) {
-        return this.cryptocurrencyRepository.findById(id).get();
-    }
-
-    @Transactional
-    public List<Cryptocurrency> findAll() {
+    public List<Cryptocurrency> getAllCryptocurrencyPrices() {
         return this.cryptocurrencyRepository.findAll();
     }
 
-    @Transactional
-    public void deleteById(Integer id) {
-        this.cryptocurrencyRepository.deleteById(id);
-    }
-
-    @Transactional
-    public Cryptocurrency updateCrypto(Cryptocurrency crypto){ return this.cryptocurrencyRepository.save(crypto);}
 }

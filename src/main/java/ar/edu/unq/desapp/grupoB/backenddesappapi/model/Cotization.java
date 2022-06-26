@@ -5,7 +5,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "cotizations")
-public class Cotizations {
+public class Cotization {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,13 +17,13 @@ public class Cotizations {
     @Column(name = "price_cotization", nullable = false)
     private Double priceCotization;
 
-    public Cotizations(Integer id, Date dateCotization, Double priceCotization) {
+    public Cotization(Integer id, Date dateCotization, Double priceCotization) {
         this.id = id;
         this.dateCotization = dateCotization;
         this.priceCotization = priceCotization;
     }
 
-    public Cotizations(){}
+    public Cotization(){}
 
     public Integer getId() {
         return id;

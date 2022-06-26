@@ -56,9 +56,15 @@ public class UserService {
     public User findUserByName(String username) { return this.userRepository.findUserByName(username);}
 
     @Transactional
-    public void openTrading(Integer userId, Integer cryptoId, Double cryptoAmount, Double cotization, Double operationAmount) throws OutOfRangeCotizationException {
-        cotizationService().checkPriceMargin(cryptoId, cotization);
-        tradingService().save(new Trading(cryptoId,cryptoAmount,cotization, operationAmount, userId));
+    public void openTrading(Integer userId, Integer cryptoId, Double cryptoAmount, Double cotization, Double operationAmount) {
+        try {
+            cotizationService().checkPriceMargin(cryptoId, cotization);
+            tradingService().save(new Trading(cryptoId, cryptoAmount, cotization, operationAmount, userId));
+        } catch (OutOfRangeCotizationException e){
+            //TODO throw 500?
+        } catch (Exception e) { // Not found
+            //TODO throw 404
+        }
     }
 
     @Transactional

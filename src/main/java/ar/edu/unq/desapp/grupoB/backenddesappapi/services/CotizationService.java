@@ -61,6 +61,6 @@ public class CotizationService {
             if(cotization > max){
                 throw new OutOfRangeCotizationException("The price is above system cotization by more than 5%");
             }
-        }
+        } //TODO throw error not found
     }
 }

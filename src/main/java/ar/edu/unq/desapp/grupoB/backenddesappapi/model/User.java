@@ -19,9 +19,8 @@ public class User {
         this.password = password;
         this.cvu = cvu;
         this.userWallet = userWallet;
-        this.reputation = 0;
+        this.points = 0;
         this.successfulOperations = 0;
-        this.totalOperations = 0;
 
         if(patternMatches(email)){
             this.email = email;
@@ -57,22 +56,11 @@ public class User {
     @Column(name="user_wallet",nullable = false, length = 8)
     private String userWallet;
 
-    @Column(name="user_reputation")
-    private Integer reputation;
+    @Column(name="reputation_points")
+    private Integer points;
 
     @Column(name = "successful_operations")
     private Integer successfulOperations;
-
-    @Column(name = "total_operations")
-    private Integer totalOperations;
-
-    public Integer getTotalOperations() {
-        return totalOperations;
-    }
-
-    public void setTotalOperations(Integer totalOperations) {
-        this.totalOperations = totalOperations;
-    }
 
     public Integer getSuccessfulOperations() {
         return successfulOperations;
@@ -82,12 +70,9 @@ public class User {
         this.successfulOperations = successfulOperations;
     }
 
-    public Integer getReputation() {
-        return reputation;
-    }
 
-    public void setReputation(Integer reputation) {
-        this.reputation = reputation;
+    public void setReputation(Integer points) {
+        this.points = points;
     }
 
     public Integer getId() {
@@ -154,9 +139,21 @@ public class User {
         this.userWallet = userWallet;
     }
 
-    public void openTransaction(Integer cryptoId, Double cryptoAmount, Double cotization, Double operationAmount){
-        TradingService service = new TradingService();
-        service.save(new Trading(cryptoId,cryptoAmount,cotization, operationAmount, this.getId()));
+
+
+    public Double getReputation() {
+        if(successfulOperations>0){
+            return Reputation.calculate(successfulOperations, points);
+        } else{
+            return 0.0;
+        }
     }
 
+    public void penalize() {
+        this.points =- Reputation.penalizationPoints();
+    }
+
+    public void successfulTrading(Long timeDifference) {
+        this.points=+ Reputation.addPoints(timeDifference);
+    }
 }

@@ -1,8 +1,6 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.services;
 
-import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.TradedVolumeDTO;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Trading;
-import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.repositories.ITradingRepository;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

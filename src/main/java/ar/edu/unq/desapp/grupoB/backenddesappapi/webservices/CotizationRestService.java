@@ -31,20 +31,4 @@ public class CotizationRestService {
         return Arrays.asList(objects);
 
     }
-/*
-    @DeleteMapping(value = "/{id}")
-    public void deleteById(@PathVariable("id") Integer id){
-        cotizationService.deleteById(id);
-    }
-
-    @PostMapping(value = "/{id}")
-    public void update(@RequestBody Cotization cotization) { cotizationService.update(cotization);
-    }
-
-    @GetMapping(value="/{id}")
-    public List<Cotization> getLast24HoursCotizations(@PathVariable("id") Integer id){
-        return cotizationService.findLast24HoursCotizations(id);
-    }
-*/
-
 }

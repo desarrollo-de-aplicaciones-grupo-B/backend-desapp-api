@@ -1,7 +1,9 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.services;
 
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Trading;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.TradingAudit;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.OutOfRangeCotizationException;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,7 +56,8 @@ public class UserService {
     public User findUserByName(String username) { return this.userRepository.findUserByName(username);}
 
     @Transactional
-    public void openTrading(Integer userId, Integer cryptoId, Double cryptoAmount, Double cotization, Double operationAmount){
+    public void openTrading(Integer userId, Integer cryptoId, Double cryptoAmount, Double cotization, Double operationAmount) throws OutOfRangeCotizationException {
+        cotizationService().checkPriceMargin(cryptoId, cotization);
         tradingService().save(new Trading(cryptoId,cryptoAmount,cotization, operationAmount, userId));
     }
 
@@ -95,6 +98,15 @@ public class UserService {
                 User buyer = findByID(trading.getBuyerId());
                 seller.successfulTrading(timeDifference);
                 buyer.successfulTrading(timeDifference);
+
+                TradingAudit tAudit = new TradingAudit();
+                tAudit.setUser(seller.getName() + " " + seller.getLastname());
+                tAudit.setCotization(trading.getCotization());
+                tAudit.setCryptoAmount(trading.getCryptoAmount());
+                tAudit.setOperationAmount(trading.getOperationAmount());
+                tAudit.setHour(confirmationDate);
+                tAudit.setShippingAddress(seller.getAddress());
+                tradingAuditService().save(tAudit);
             } else {
                 tradingService().deleteById(trading.getIdOperation());
             }
@@ -109,4 +121,5 @@ public class UserService {
     public CotizationService cotizationService(){
         return new CotizationService();
     }
+    public TradingAuditService tradingAuditService() { return new TradingAuditService(); }
 }

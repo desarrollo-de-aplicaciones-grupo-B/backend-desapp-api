@@ -80,8 +80,9 @@ public class Trading {
         this.cotization = cotization;
         this.operationAmount = operationAmount;
         this.sellerId = sellerId;
-        creationDate= LocalDateTime.now();
+        creationDate = LocalDateTime.now();
         transferConfirmed = false;
+        buyerId = null;
     }
 
     public Trading(){}
@@ -118,4 +119,10 @@ public class Trading {
 
     @Column(name = "transferConfirmed")
     private boolean transferConfirmed;
+
+    public void confirmTransfer(Integer buyerId) {
+        if(this.buyerId.equals(buyerId)) {
+            this.transferConfirmed = true;
+        } //TODO throw error?
+    }
 }

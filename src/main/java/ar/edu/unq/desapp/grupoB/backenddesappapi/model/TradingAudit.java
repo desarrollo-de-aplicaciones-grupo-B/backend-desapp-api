@@ -1,7 +1,7 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.model;
 
 import javax.persistence.*;
-import java.sql.Time;
+import java.time.LocalDateTime;
 
 @Entity
 @Table
@@ -11,8 +11,8 @@ public class TradingAudit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer tradingAuditId;
 
-    @Column(name = "hour_trading_audit",nullable = false)
-    private Time hour;
+    @Column(columnDefinition = "TIMESTAMP", name = "hour_trading_audit",nullable = false)
+    private LocalDateTime hour;
 
     @Column(name = "cryptoId",nullable = false)
     private Integer cryptoId;
@@ -23,9 +23,6 @@ public class TradingAudit {
     @Column(name = "cotization",nullable = false)
     private Double cotization;
 
-    @Column(name = "transactionAmount",nullable = false)
-    private Double transactionAmount;
-
     @Column(name = "seller_audit",nullable = false)
     private String seller; //nombre-apellido
 
@@ -33,25 +30,19 @@ public class TradingAudit {
     private String buyer;
 
     @Column(name = "operationAmount",nullable = false)
-    private String operationAmount; //preguntar que es
-
-    @Column(name = "reputation",nullable = false)
-    private Double reputation;
+    private Double operationAmount;
 
     @Column(name = "shippingAddress",nullable = false)
     private String shippingAddress;
 
-    public TradingAudit(Integer tradingAuditId, Time hour, Integer cryptoId, Double cryptoAmount, Double cotization, Double transactionAmount, String seller, String buyer, String operationAmount, Double reputation, String shippingAddress, Integer actionType) {
-        this.tradingAuditId = tradingAuditId;
+    public TradingAudit(LocalDateTime hour, Integer cryptoId, Double cryptoAmount, Double cotization, String seller, String buyer, Double operationAmount, String shippingAddress, Integer actionType) {
         this.hour = hour;
         this.cryptoId = cryptoId;
         this.cryptoAmount = cryptoAmount;
         this.cotization = cotization;
-        this.transactionAmount = transactionAmount;
         this.seller = seller;
         this.buyer = buyer;
         this.operationAmount = operationAmount;
-        this.reputation = reputation;
         this.shippingAddress = shippingAddress;
         this.actionType = actionType;
     }
@@ -59,9 +50,7 @@ public class TradingAudit {
     @Column(name = "actionType",nullable = false)
     private Integer actionType;
 
-    public TradingAudit() {
-
-    }
+    public TradingAudit() {}
 
     public Integer getTradingAuditId() {
         return tradingAuditId;
@@ -71,11 +60,11 @@ public class TradingAudit {
         this.tradingAuditId = tradingAuditId;
     }
 
-    public Time getHour() {
+    public LocalDateTime getHour() {
         return hour;
     }
 
-    public void setHour(Time hour) {
+    public void setHour(LocalDateTime hour) {
         this.hour = hour;
     }
 
@@ -103,14 +92,6 @@ public class TradingAudit {
         this.cotization = cotization;
     }
 
-    public Double getTransactionAmount() {
-        return transactionAmount;
-    }
-
-    public void setTransactionAmount(Double transactionAmount) {
-        this.transactionAmount = transactionAmount;
-    }
-
     public String getSeller() {
         return seller;
     }
@@ -127,20 +108,12 @@ public class TradingAudit {
         this.buyer = buyer;
     }
 
-    public String getOperationAmount() {
+    public Double getOperationAmount() {
         return operationAmount;
     }
 
-    public void setOperationAmount(String operationAmount) {
+    public void setOperationAmount(Double operationAmount) {
         this.operationAmount = operationAmount;
-    }
-
-    public Double getReputation() {
-        return reputation;
-    }
-
-    public void setReputation(Double reputation) {
-        this.reputation = reputation;
     }
 
     public String getShippingAddress() {

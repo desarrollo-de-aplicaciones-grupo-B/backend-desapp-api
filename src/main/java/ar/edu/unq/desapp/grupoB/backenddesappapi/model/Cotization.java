@@ -8,7 +8,6 @@ import java.util.Date;
 public class Cotization {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "date_cotization", nullable = false)

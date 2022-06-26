@@ -29,6 +29,5 @@ public class CotizationRestService {
         Object[] objects = restTemplate.getForObject(url, Object[].class);
 
         return Arrays.asList(objects);
-
     }
 }

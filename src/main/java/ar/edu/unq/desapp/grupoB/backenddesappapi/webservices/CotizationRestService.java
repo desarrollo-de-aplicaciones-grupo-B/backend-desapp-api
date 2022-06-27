@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.webservices;
 
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Cotization;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Cryptocurrency;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.CryptoCotizationDTO;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.CotizationService;
 import org.springframework.beans.factory.annotation.Autowired;

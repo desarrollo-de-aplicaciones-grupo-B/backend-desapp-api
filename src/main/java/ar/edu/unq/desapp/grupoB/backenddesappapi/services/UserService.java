@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.services;
 
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.RegisterDTO;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Trading;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.TradingAudit;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
@@ -20,8 +21,8 @@ public class UserService {
     private IUserRepository userRepository;
 
     @Transactional
-    public User save(User user){
-        return this.userRepository.save(user);
+    public User save(User user) {
+          return userRepository.save(user);
     }
 
     @Transactional
@@ -128,4 +129,6 @@ public class UserService {
         return new CotizationService();
     }
     public TradingAuditService tradingAuditService() { return new TradingAuditService(); }
+
+
 }

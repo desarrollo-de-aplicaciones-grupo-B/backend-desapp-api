@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.grupoB.backenddesappapi.model;
 
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.WrongEmailFormatException;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.TradingService;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 
@@ -56,9 +57,11 @@ public class User {
     @Column(name="user_wallet",nullable = false, length = 8)
     private String userWallet;
 
+    @NonNull
     @Column(name="reputation_points")
     private Integer points;
 
+    @NonNull
     @Column(name = "successful_operations")
     private Integer successfulOperations;
 
@@ -69,7 +72,6 @@ public class User {
     public void setSuccessfulOperations(Integer successfulOperations) {
         this.successfulOperations = successfulOperations;
     }
-
 
     public void setReputation(Integer points) {
         this.points = points;

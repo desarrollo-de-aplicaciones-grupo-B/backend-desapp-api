@@ -1,15 +1,11 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.webservices;
 
-
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/users")
@@ -23,13 +19,14 @@ public class UserRestService {
         return userService.findAll();
     }
 
-    @PostMapping
-    public void saveUser(@RequestBody User user){
-        userService.save(user);
+
+    @PostMapping("/register")
+    public void register(@RequestBody User user){
+         this.userService.save(user);
     }
 
-    @GetMapping(value = "/{username}")
-    public User getUserByName(@RequestParam(value = "username")String username){ return userService.findUserByName(username); }
+    //@GetMapping(value = "/{username}")
+    //public User getUserByName(@RequestParam(value = "username")String username){ return userService.findUserByName(username); }
 
     @GetMapping(value = "/{id}")
     public User getById(@PathVariable("id") Integer id){

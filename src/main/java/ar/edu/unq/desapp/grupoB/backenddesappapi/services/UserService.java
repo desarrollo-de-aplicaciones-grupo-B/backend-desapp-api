@@ -19,6 +19,18 @@ public class UserService {
     @Autowired
     private IUserRepository userRepository;
 
+    @Autowired
+    private CryptocurrencyService cryptocurrencyService;
+
+    @Autowired
+    private CotizationService cotizationService;
+
+    @Autowired
+    private TradingAuditService tradingAuditService;
+
+    @Autowired
+    private TradingService tradingService;
+
     @Transactional
     public User save(User user){
         return this.userRepository.save(user);
@@ -58,8 +70,8 @@ public class UserService {
     @Transactional
     public void openTrading(Integer userId, Integer cryptoId, Double cryptoAmount, Double cotization, Double operationAmount) {
         try {
-            cotizationService().checkPriceMargin(cryptoId, cotization);
-            tradingService().save(new Trading(cryptoId, cryptoAmount, cotization, operationAmount, userId));
+            cotizationService.checkPriceMargin(cryptoId, cotization);
+            tradingService.save(new Trading(cryptoId, cryptoAmount, cotization, operationAmount, userId));
         } catch (OutOfRangeCotizationException e){
             //TODO throw 500?
         } catch (Exception e) { // Not found
@@ -69,13 +81,13 @@ public class UserService {
 
     @Transactional
     public void buy(Integer userId, Integer tradingId){
-        Trading trading = tradingService().findByID(tradingId);
+        Trading trading = tradingService.findByID(tradingId);
         trading.setBuyerId(userId);
     }
 
     @Transactional
     public void cancel(Integer userId,Integer tradingId){
-        Trading trading = tradingService().findByID(tradingId);
+        Trading trading = tradingService.findByID(tradingId);
         User canceller = findByID(userId);
         if(trading.getBuyerId().equals(userId)){
             canceller.penalize();
@@ -83,19 +95,19 @@ public class UserService {
         if(trading.getSellerId().equals(userId) && trading.getBuyerId() != null){ //If there is not a buyer yet the seller wont get penalized
             canceller.penalize();
         }
-        tradingService().deleteById(trading.getIdOperation());
+        tradingService.deleteById(trading.getIdOperation());
     }
 
     @Transactional
     public void confirmTransfer(Integer userId,Integer tradingId){
-        Trading trading = tradingService().findByID(tradingId);
+        Trading trading = tradingService.findByID(tradingId);
         trading.confirmTransfer(userId);
-        tradingService().updateTrading(trading);
+        tradingService.updateTrading(trading);
     }
 
     @Transactional
     public void confirmReception(Integer userId,Integer tradingId){
-        Trading trading = tradingService().findByID(tradingId);
+        Trading trading = tradingService.findByID(tradingId);
         LocalDateTime confirmationDate = LocalDateTime.now();
         if(trading.getSellerId().equals(userId)) {
             if(cotizationIsOK(trading.getCryptoId(), trading.getCotization())){
@@ -112,20 +124,13 @@ public class UserService {
                 tAudit.setOperationAmount(trading.getOperationAmount());
                 tAudit.setHour(confirmationDate);
                 tAudit.setShippingAddress(seller.getAddress());
-                tradingAuditService().save(tAudit);
+                tradingAuditService.save(tAudit);
             } else {
-                tradingService().deleteById(trading.getIdOperation());
+                tradingService.deleteById(trading.getIdOperation());
             }
         }
     }
     public boolean cotizationIsOK(Integer cryptoId, Double cotization){
-        return cotizationService().cotizationIsOK(cryptoId, cotization);
+        return cotizationService.cotizationIsOK(cryptoId, cotization);
     }
-    public TradingService tradingService(){
-        return new TradingService();
-    }
-    public CotizationService cotizationService(){
-        return new CotizationService();
-    }
-    public TradingAuditService tradingAuditService() { return new TradingAuditService(); }
 }

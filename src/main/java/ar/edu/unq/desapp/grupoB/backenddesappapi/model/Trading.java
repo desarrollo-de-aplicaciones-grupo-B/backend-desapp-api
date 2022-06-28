@@ -54,21 +54,13 @@ public class Trading {
         return sellerId;
     }
 
-    public void setUSellerId(Integer sellerId) {
+    public void setSellerId(Integer sellerId) {
         this.sellerId = sellerId;
     }
 
     public Integer getBuyerId() { return buyerId; }
 
     public void setBuyerId(Integer buyerId) { this.buyerId = buyerId; }
-
-    public OperationType getOperationType() {
-        return operationType;
-    }
-
-    public void setOperationType(OperationType operationType) {
-        this.operationType = operationType;
-    }
 
     public boolean isTransferConfirmed() {
         return transferConfirmed;
@@ -80,9 +72,9 @@ public class Trading {
         this.cotization = cotization;
         this.operationAmount = operationAmount;
         this.sellerId = sellerId;
-        creationDate = LocalDateTime.now();
-        transferConfirmed = false;
-        buyerId = null;
+        this.creationDate = LocalDateTime.now();
+        this.transferConfirmed = false;
+        this.buyerId = null;
     }
 
     public Trading(){}
@@ -109,10 +101,6 @@ public class Trading {
 
     @Column(name = "buyerId")
     private Integer buyerId;
-
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "operationType", nullable = false, length = 1)
-    private OperationType operationType;
 
     @Column(columnDefinition = "TIMESTAMP", name="creation_date")
     private LocalDateTime creationDate;

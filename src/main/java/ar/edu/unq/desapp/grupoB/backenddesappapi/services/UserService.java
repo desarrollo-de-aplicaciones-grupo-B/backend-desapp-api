@@ -21,8 +21,8 @@ public class UserService {
     private IUserRepository userRepository;
 
     @Transactional
-    public User save(User user) {
-          return userRepository.save(user);
+    public void save(User user) {
+          this.userRepository.save(user);
     }
 
     @Transactional

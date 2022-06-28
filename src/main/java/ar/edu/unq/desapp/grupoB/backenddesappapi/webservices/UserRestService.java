@@ -3,6 +3,7 @@ package ar.edu.unq.desapp.grupoB.backenddesappapi.webservices;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -19,14 +20,11 @@ public class UserRestService {
         return userService.findAll();
     }
 
-
-    @PostMapping("/register")
-    public void register(@RequestBody User user){
-         this.userService.save(user);
+    @PostMapping(path = "/register")
+    public ResponseEntity<String> register(@RequestBody User user){
+        this.userService.save(user);
+        return ResponseEntity.ok().body("The user was registered");
     }
-
-    //@GetMapping(value = "/{username}")
-    //public User getUserByName(@RequestParam(value = "username")String username){ return userService.findUserByName(username); }
 
     @GetMapping(value = "/{id}")
     public User getById(@PathVariable("id") Integer id){

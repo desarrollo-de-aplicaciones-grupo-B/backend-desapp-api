@@ -1,7 +1,6 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.model;
 
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.WrongEmailFormatException;
-import ar.edu.unq.desapp.grupoB.backenddesappapi.services.TradingService;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
@@ -12,7 +11,7 @@ import static ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.EmailFormatA
 @Table(name="user_table")
 public class User {
 
-    public User(Integer id, String name, String lastname, String email, String address, String password, String cvu, String userWallet) throws Exception {
+    public User(Integer id, String name, String lastname, String email, String address, String password, String cvu, String userWallet) {
         this.id = id;
         this.name = name;
         this.lastname = lastname;
@@ -23,15 +22,10 @@ public class User {
         this.points = 0;
         this.successfulOperations = 0;
 
-        if(patternMatches(email)){
-            this.email = email;
-        }
-        else{
-            throw new WrongEmailFormatException("The email entered does not comply with the format");
-        }
-    }
+           }
 
     public User(){  }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -64,18 +58,6 @@ public class User {
     @NonNull
     @Column(name = "successful_operations")
     private Integer successfulOperations;
-
-    public Integer getSuccessfulOperations() {
-        return successfulOperations;
-    }
-
-    public void setSuccessfulOperations(Integer successfulOperations) {
-        this.successfulOperations = successfulOperations;
-    }
-
-    public void setReputation(Integer points) {
-        this.points = points;
-    }
 
     public Integer getId() {
         return id;
@@ -141,21 +123,28 @@ public class User {
         this.userWallet = userWallet;
     }
 
-
-
-    public Double getReputation() {
-        if(successfulOperations>0){
-            return Reputation.calculate(successfulOperations, points);
-        } else{
-            return 0.0;
-        }
-    }
-
     public void penalize() {
         this.points =- Reputation.penalizationPoints();
     }
 
     public void successfulTrading(Long timeDifference) {
         this.points=+ Reputation.addPoints(timeDifference);
+    }
+
+
+    public Integer getPoints() {
+        return points;
+    }
+
+    public void setPoints(Integer points) {
+        this.points = points;
+    }
+
+    public Integer getSuccessfulOperations() {
+        return successfulOperations;
+    }
+
+    public void setSuccessfulOperations(Integer successfulOperations) {
+        this.successfulOperations = successfulOperations;
     }
 }

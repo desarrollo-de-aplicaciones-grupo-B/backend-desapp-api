@@ -1,13 +1,83 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi;
 
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Cotization;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Cryptocurrency;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Trading;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.services.CotizationService;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.services.CryptocurrencyService;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.services.TradingService;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.services.UserService;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.sql.Date;
+import java.time.Instant;
 
 @SpringBootTest
 class BackendDesappApiApplicationTests {
+	@Autowired
+	private UserService uService;
+	@Autowired
+	private CotizationService cService;
+	@Autowired
+	private CryptocurrencyService ccService;
+	@Autowired
+	private TradingService tService;
 
 	@Test
 	void contextLoads() {
+		Cryptocurrency crypto = new Cryptocurrency();
+		crypto.setCryptoName("testusd");
+		crypto.setCotization(12.0);
+		crypto.setDateLastCotization(Date.from(Instant.now()));
+		crypto.setNomenclature("nomenclat");
+		crypto.setId(1);
+		ccService.save(crypto);
+
+		Cotization cot = new Cotization();
+		cot.setId(1);
+		cot.setDateCotization(Date.from(Instant.now()));
+		cot.setPriceCotization(12.0);
+		cService.save(cot);
+
+		User user1 = new User();
+		user1.setId(1);
+		user1.setName("uno");
+		user1.setAddress("sdad");
+		user1.setUserWallet("wallet1");
+		user1.setCvu("cbvqd");
+		user1.setEmail("dsads@gmail.com");
+		user1.setPassword("pass1");
+		user1.setReputation(0);
+		user1.setSuccessfulOperations(0);
+		user1.setLastname("lastname");
+		uService.save(user1);
+
+		User user2 = new User();
+		user2.setId(2);
+		user2.setName("dos");
+		user2.setAddress("sdad");
+		user2.setUserWallet("wallet1");
+		user2.setCvu("cbvqd");
+		user2.setEmail("dsads@gmail.com");
+		user2.setPassword("pass1");
+		user2.setReputation(0);
+		user2.setSuccessfulOperations(0);
+		user2.setLastname("lastname");
+		uService.save(user2);
+
+		Trading trad = new Trading();
+		trad.setSellerId(1);
+		trad.setBuyerId(2);
+		trad.setCotization(12.0);
+		trad.setCryptoId(1);
+		trad.setOperationAmount(5.0);
+
+
+		uService.openTrading(1, 1,45.0,11.9, 2500.0);
+
 	}
 
 }

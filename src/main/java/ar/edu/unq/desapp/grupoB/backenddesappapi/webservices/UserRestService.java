@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -15,7 +16,7 @@ public class UserRestService {
     @Autowired
     private UserService userService;
 
-    @GetMapping
+    @GetMapping(path = "/allUser")
     public List<User> getAll(){
         return userService.findAll();
     }
@@ -26,18 +27,13 @@ public class UserRestService {
         return ResponseEntity.ok().body("The user was registered");
     }
 
-    @GetMapping(value = "/{id}")
-    public User getById(@PathVariable("id") Integer id){
-        return userService.findByID(id);
-    }
-
-    @DeleteMapping(value = "/{id}")
-    public void deleteById(@PathVariable("id") Integer id){
-        userService.deleteById(id);
-    }
-
     @PostMapping(value = "/{id}")
     public void updateUser(@RequestBody User user, @PathVariable ("id") Integer id){
         userService.updateUser(user,id);
+    }
+
+    @GetMapping(path = "/{user}")
+    public Optional<User> userByName(@RequestParam ("name") String name){
+        return userService.findUserByName(name);
     }
 }

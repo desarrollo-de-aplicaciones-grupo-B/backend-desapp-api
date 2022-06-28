@@ -16,6 +16,6 @@ public interface IUserRepository extends CrudRepository<User, Integer> {
 
     List<User> findAll();
 
-    User findUserByName(String username);
+    Optional<User> findUserByName(String username);
 
 }

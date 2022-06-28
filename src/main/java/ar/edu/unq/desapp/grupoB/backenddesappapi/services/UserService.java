@@ -7,6 +7,8 @@ import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.OutOfRangeCotizationException;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,17 +19,26 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+
     @Autowired
     private IUserRepository userRepository;
 
     @Transactional
     public void save(User user) {
-          this.userRepository.save(user);
+        user.setPoints(0);
+        user.setSuccessfulOperations(0);
+        this.userRepository.save(user);
+        System.out.println("estoy aca");
     }
 
     @Transactional
     public User findByID(Integer id) {
         return this.userRepository.findById(id).get();
+    }
+
+    @Transactional
+    public Optional<User> findUserByName(String name){
+        return this.userRepository.findUserByName(name);
     }
 
     @Transactional
@@ -52,9 +63,6 @@ public class UserService {
         user.setCvu(userUpdate.getCvu());
         user.setUserWallet(userUpdate.getUserWallet());
     }
-
-    @Transactional
-    public User findUserByName(String username) { return this.userRepository.findUserByName(username);}
 
     @Transactional
     public void openTrading(Integer userId, Integer cryptoId, Double cryptoAmount, Double cotization, Double operationAmount) {

@@ -1,28 +1,19 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.model;
 
-import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.WrongEmailFormatException;
-import org.springframework.lang.NonNull;
-
 import javax.persistence.*;
-
-import static ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.EmailFormatAuthentication.patternMatches;
 
 @Entity
 @Table(name="user_table")
 public class User {
 
-    public User(Integer id, String name, String lastname, String email, String address, String password, String cvu, String userWallet) {
-        this.id = id;
+    public User(String name, String lastname, String email, String address, String password, String cvu, String userWallet) {
         this.name = name;
         this.lastname = lastname;
         this.address = address;
         this.password = password;
         this.cvu = cvu;
         this.userWallet = userWallet;
-        this.points = 0;
-        this.successfulOperations = 0;
-
-           }
+    }
 
     public User(){  }
 
@@ -51,12 +42,10 @@ public class User {
     @Column(name="user_wallet",nullable = false, length = 8)
     private String userWallet;
 
-    @NonNull
-    @Column(name="reputation_points")
+    @Column(name="points")
     private Integer points;
 
-    @NonNull
-    @Column(name = "successful_operations")
+    @Column(name = "successfulOperations")
     private Integer successfulOperations;
 
     public Integer getId() {

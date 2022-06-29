@@ -1,8 +1,6 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.repositories;
 
-import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.TradingUserDTO;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Trading;
-import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -17,10 +15,10 @@ import java.util.Optional;
 public interface ITradingRepository extends CrudRepository<Trading, Integer> {
     Optional<Trading> findById(Integer id);
 
-    @Query(value = "SELECT creationDate, c.crypto_name, u.user_name, u.user_last_name, t.cryptoAmount, t.cotization, t.operationAmount,  " +
-            "FROM trading t" +
-            "INNER JOIN cryptocurrency c ON t.cryptoId = c.id " +
-            "INNER JOIN user_table u u.id = t.userId" +
+    @Query(value = "SELECT creation_date, c.crypto_name, t.crypto_amount, t.cotization, t.operation_amount, concat(u.user_name,  ' ',  u.user_last_name), u.successful_operations, case when u.successful_operations = 0 then cast(0.0 as double precision) else u.reputation_points / u.successful_operations end " +
+            "FROM trading t " +
+            "INNER JOIN cryptocurrency c ON t.crypto_id = c.id " +
+            "INNER JOIN user_table u ON u.id = t.seller_id " +
             "AND u.id = :id", nativeQuery = true)
-    List<TradingUserDTO> getAllUserTradings( @Param("id") Integer id );
+    List<Object[]> getAllUserTradings(@Param("id") Integer id );
 }

@@ -4,6 +4,7 @@ import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Cotization;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Cryptocurrency;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Trading;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.OutOfRangeCotizationException;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.CotizationService;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.CryptocurrencyService;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.TradingService;
@@ -27,7 +28,7 @@ class BackendDesappApiApplicationTests {
 	private TradingService tService;
 
 	@Test
-	void contextLoads() {
+	void contextLoads() throws OutOfRangeCotizationException {
 		Cryptocurrency crypto = new Cryptocurrency();
 		crypto.setCryptoName("testusd");
 		crypto.setCotization(12.0);
@@ -68,16 +69,14 @@ class BackendDesappApiApplicationTests {
 		user2.setLastname("lastname");
 		uService.save(user2);
 
-		Trading trad = new Trading();
-		trad.setSellerId(1);
-		trad.setBuyerId(2);
-		trad.setCotization(12.0);
-		trad.setCryptoId(1);
-		trad.setOperationAmount(5.0);
 
 
 		uService.openTrading(1, 1,45.0,11.9, 2500.0);
 
+		uService.buy(2,1);
+		uService.cancel(1,1);
+//		uService.confirmTransfer(2,1);
+//		uService.confirmReception(1,1);
 	}
 
 }

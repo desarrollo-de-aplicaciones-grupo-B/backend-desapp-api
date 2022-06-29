@@ -20,7 +20,7 @@ public class Logging {
 
     private static final Logger logger = LogManager.getLogger(Logging.class);
 
-    @Around("within(@org.springframework.stereotype.RestController *)")
+    @Around("within(@org.springframework.web.bind.annotation.RestController *)")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
         logger.debug("----------------------------------------------------------------------------------------------------------------------------------------------------------------");
         logger.debug("Request for {}.{}() with argument[s] = {}", joinPoint.getSignature().getDeclaringTypeName(),
@@ -29,7 +29,7 @@ public class Logging {
         Object returnValue= joinPoint.proceed();
         Instant finish = Instant.now();
         long timeElapsed = Duration.between(start,finish).toMillis();
-        logger.debug("Time taken: "+ new SimpleDateFormat("mm:ss:SSS").format(new Date(timeElapsed)));
+        logger.debug("Time taken: "+new SimpleDateFormat("mm:ss:SSS").format(new Date(timeElapsed)));
         logger.debug("----------------------------------------------------------------------------------------------------------------------------------------------------------------");
         return returnValue;
     }

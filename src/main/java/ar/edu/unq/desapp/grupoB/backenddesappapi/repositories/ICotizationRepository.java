@@ -17,9 +17,10 @@ public interface ICotizationRepository extends CrudRepository<Cotization, Intege
 
     List<Cotization> findAll();
 
-    @Query(value =  "SELECT * " +
-            "FROM cotizations c" +
-            "WHERE date_cotization BETWEEN GETDATE()-1 AND GETDATE() " +
-            "AND c.id = :id", nativeQuery = true)
-    List<Cotization> findLast24HoursCotizations( @Param("id") Integer id );
+    @Query(value =  "SELECT coti.id, coti.date_cotization, coti.price_cotization, coti.crypto_nomenclature " +
+            "FROM cotizations coti " +
+            "INNER JOIN cryptocurrency crypto ON crypto.nomenclature = coti.crypto_nomenclature AND crypto.nomenclature = :crypto_name " +
+            "WHERE date_cotization BETWEEN NOW()- INTERVAL '1 DAY' AND NOW()"
+            , nativeQuery = true)
+    List<Cotization> findLast24HoursCotizations( @Param("crypto_name") String crypto_name );
 }

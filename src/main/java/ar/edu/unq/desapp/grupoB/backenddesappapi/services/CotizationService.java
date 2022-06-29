@@ -1,10 +1,12 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.services;
 
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Cotization;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.OutOfRangeCotizationException;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.repositories.ICotizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -17,8 +19,8 @@ public class CotizationService {
     private ICotizationRepository cotizationRepository;
 
     @Transactional
-    public Cotization save(Cotization cotization){
-        return this.cotizationRepository.save(cotization);
+    public void save(Cotization cotization){
+         this.cotizationRepository.save(cotization);
     }
 
     @Transactional
@@ -40,8 +42,8 @@ public class CotizationService {
     }
 
     @Transactional
-    public List<Cotization> findLast24HoursCotizations(Integer id){
-        return this.cotizationRepository.findLast24HoursCotizations(id);
+    public List<Cotization> findLast24HoursCotizations(String name){
+        return this.cotizationRepository.findLast24HoursCotizations(name);
     }
 
     public boolean cotizationIsOK(Integer cryptoId, Double tradingCotization) {

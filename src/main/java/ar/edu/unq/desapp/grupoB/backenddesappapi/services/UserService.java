@@ -25,10 +25,8 @@ public class UserService {
 
     @Transactional
     public void save(User user) {
-        user.setPoints(0);
-        user.setSuccessfulOperations(0);
+
         this.userRepository.save(user);
-        System.out.println("estoy aca");
     }
 
     @Transactional

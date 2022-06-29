@@ -1,5 +1,8 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.model;
 
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
 import javax.persistence.*;
 
 @Entity
@@ -43,10 +46,15 @@ public class User {
     private String userWallet;
 
     @Column(name="points")
-    private Integer points;
+    private Integer points = 0;
 
     @Column(name = "successfulOperations")
-    private Integer successfulOperations;
+    private Integer successfulOperations = 0;
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 
     public Integer getId() {
         return id;
@@ -119,7 +127,6 @@ public class User {
     public void successfulTrading(Long timeDifference) {
         this.points=+ Reputation.addPoints(timeDifference);
     }
-
 
     public Integer getPoints() {
         return points;

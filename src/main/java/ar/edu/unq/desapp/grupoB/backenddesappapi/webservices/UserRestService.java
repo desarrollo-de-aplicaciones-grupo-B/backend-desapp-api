@@ -17,13 +17,13 @@ public class UserRestService {
     private UserService userService;
 
     @GetMapping(path = "/allUser")
-    public List<User> getAll(){
-        return userService.findAll();
+    public ResponseEntity<List<User>> getAll(){
+        return ResponseEntity.ok().body(userService.findAll());
     }
 
     @PostMapping(path = "/register")
     public ResponseEntity<String> register(@RequestBody User user){
-        this.userService.save(user);
+        userService.save(user);
         return ResponseEntity.ok().body("The user was registered");
     }
 
@@ -32,7 +32,7 @@ public class UserRestService {
         userService.updateUser(user,id);
     }
 
-    @GetMapping(path = "/{user}")
+    @GetMapping()
     public Optional<User> userByName(@RequestParam ("name") String name){
         return userService.findUserByName(name);
     }

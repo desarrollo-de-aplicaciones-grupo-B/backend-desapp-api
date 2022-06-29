@@ -1,5 +1,7 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.webservices;
 
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.CreateTransactionDTO;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Trading;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +34,8 @@ public class UserRestService {
     }
 
     @PostMapping(value = "/{id}/newTrading")
-    public void openTrading(@RequestBody Integer cryptoId, Double cryptoAmount, Double cotization, Double operationAmount, @PathVariable("id")Integer id) {
-        userService.openTrading(id,cryptoId,cryptoAmount,cotization,operationAmount);
+    public void openTrading(@RequestBody CreateTransactionDTO trading, @PathVariable("id")Integer id) {
+        userService.openTrading(id, trading);
     }
 
     @PutMapping(value ="/{id}/buy/{tradingId}")
@@ -45,10 +47,12 @@ public class UserRestService {
     public void confirmTransfer(@PathVariable("id")Integer buyerId, @PathVariable("tradingId")Integer tradingId){
         userService.confirmTransfer(buyerId,tradingId);
     }
+
     @PutMapping(value="/{id}/confirmReception/{tradingId}")
     public void confirmReception(@PathVariable("id")Integer sellerId, @PathVariable("tradingId")Integer tradingId){
         userService.confirmReception(sellerId,tradingId);
     }
+
     @PutMapping(value="/{id}/cancel/{tradingId}")
     public void cancel(@PathVariable("id")Integer userId, @PathVariable("tradingId")Integer tradingId){
         userService.cancel(userId,tradingId);

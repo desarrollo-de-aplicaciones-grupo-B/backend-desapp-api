@@ -18,9 +18,6 @@ public class User {
         this.password = password;
         this.cvu = cvu;
         this.userWallet = userWallet;
-        this.points = 0;
-        this.successfulOperations = 0;
-
         if(patternMatches(email)){
             this.email = email;
         }
@@ -56,10 +53,10 @@ public class User {
     private String userWallet;
 
     @Column(name="reputation_points")
-    private Integer points;
+    private Integer points = 0;
 
     @Column(name = "successful_operations")
-    private Integer successfulOperations;
+    private Integer successfulOperations = 0;
 
     public Integer getSuccessfulOperations() {
         return successfulOperations;

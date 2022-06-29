@@ -1,7 +1,0 @@
-spring:
-  application:
-    name: backend-desapp-api
-  cloud:
-    config:
-      enable: true
-      uri: http://localhost:8080

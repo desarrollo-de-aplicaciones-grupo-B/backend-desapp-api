@@ -71,11 +71,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/authenticate").permitAll()
                 .antMatchers("/users/register").permitAll()
+                .antMatchers("/users/allUser").permitAll()
                 // all other requests need to be authenticated
                         .antMatchers("/cotization/{crypto_name}").permitAll()
                         .antMatchers("/cotization").permitAll()
                         .antMatchers("/cotization/binance").permitAll()
                         .antMatchers("/crypto").permitAll()
+                        .antMatchers("/users/{id}/newTrading").permitAll()
+                        .antMatchers("/users/{id}/buy/{tradingId}").permitAll()
+                        .antMatchers("/users/{id}/confirmTransfer/{tradingId}").permitAll()
+                        .antMatchers("/users/{id}/confirmReception/{tradingId}").permitAll()
+                        .antMatchers("/users/{id}/cancel/{tradingId}").permitAll()
+                        .antMatchers("/cotization/{id}/cancel/{tradingId}").permitAll()
                         .anyRequest().authenticated().and().
                 // make sure we use stateless session; session won't be used to
                 // store user's state.

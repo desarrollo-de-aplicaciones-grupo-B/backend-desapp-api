@@ -98,7 +98,6 @@ public class Trading {
     @Column(name = "sellerId")
     private Integer sellerId;
 
-
     @Column(name = "buyerId")
     private Integer buyerId;
 

@@ -1,13 +1,12 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.services;
 
-import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.RegisterDTO;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.CreateTransactionDTO;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Trading;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.TradingAudit;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.OutOfRangeCotizationException;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.repositories.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 
 import org.springframework.stereotype.Service;
 
@@ -37,7 +36,6 @@ public class UserService {
 
     @Transactional
     public void save(User user) {
-
         this.userRepository.save(user);
     }
 
@@ -75,10 +73,10 @@ public class UserService {
     }
 
     @Transactional
-    public void openTrading(Integer userId, Integer cryptoId, Double cryptoAmount, Double cotization, Double operationAmount) {
+    public void openTrading(Integer userId, CreateTransactionDTO createTransactionDTO) {
         try {
-            cotizationService.checkPriceMargin(cryptoId, cotization);
-            tradingService.save(new Trading(cryptoId, cryptoAmount, cotization, operationAmount, userId));
+            cotizationService.checkPriceMargin(createTransactionDTO.getCryptoId(), createTransactionDTO.getCotization());
+            tradingService.save(new Trading(createTransactionDTO.getCryptoId(), createTransactionDTO.getCryptoAmount(), createTransactionDTO.getCotization(), createTransactionDTO.getOperationAmount(), userId));
         } catch (OutOfRangeCotizationException e){
             //TODO throw 500?
         } catch (Exception e) { // Not found
@@ -138,7 +136,7 @@ public class UserService {
     }
 
     @Transactional
-    private TradingAudit createTransactionAudit(Trading trading, User seller, LocalDateTime confirmationDate) {
+    public TradingAudit createTransactionAudit(Trading trading, User seller, LocalDateTime confirmationDate) {
         TradingAudit tAudit = new TradingAudit();
         String cryptoName = cryptocurrencyService.findById(trading.getCryptoId()).get().getCryptoName();
         tAudit.setCryptocurrency(cryptoName);

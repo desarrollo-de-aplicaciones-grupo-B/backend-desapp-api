@@ -69,8 +69,7 @@ class BackendDesappApiApplicationTests {
 		uService.save(user2);
 
 
-
-		uService.openTrading(1, 1,45.0,11.9, 2500.0);
+		//uService.openTrading(1, 1,45.0,11.9, 2500.0);
 
 		uService.buy(2,1);
 		uService.cancel(1,1);

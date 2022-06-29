@@ -130,6 +130,7 @@ public class UserService {
         throw new Error(); //TODO transferencia no confirmada, tirar una excepcion o no?
     }
 
+    @Transactional
     private TradingAudit createTransactionAudit(Trading trading, User seller, LocalDateTime confirmationDate) {
         TradingAudit tAudit = new TradingAudit();
         String cryptoName = cryptocurrencyService.findById(trading.getCryptoId()).get().getCryptoName();

@@ -102,7 +102,7 @@ public class Trading {
     @Column(name = "buyerId")
     private Integer buyerId;
 
-    @Column(columnDefinition = "TIMESTAMP", name="creation_date")
+    @Column(name="creation_date")
     private LocalDateTime creationDate;
 
     @Column(name = "transferConfirmed")

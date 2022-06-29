@@ -12,6 +12,17 @@ public class TradingUserDTO {
     private Integer successfulOperations;
     private Double reputation;
 
+    public TradingUserDTO(LocalDateTime cDate, String crypto, Double cryptoAmount, Double cotization, Double operationAmount, String userName, Integer successfulOperations, Double reputation){
+        this.creationDate = cDate;
+        this.cryptocurrency = crypto;
+        this.cryptoAmount = cryptoAmount;
+        this.cotization = cotization;
+        this.operationAmount = operationAmount;
+        this.userName = userName;
+        this.successfulOperations = successfulOperations;
+        this.reputation = reputation;
+    }
+
 
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;

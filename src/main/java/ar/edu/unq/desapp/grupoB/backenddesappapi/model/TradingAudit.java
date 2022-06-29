@@ -14,11 +14,8 @@ public class TradingAudit {
     @Column(columnDefinition = "TIMESTAMP", name = "hour_trading_audit",nullable = false)
     private LocalDateTime hour;
 
-    @Column(name = "userId", nullable = false)
-    private Integer userId;
-
     @Column(name = "cryptoId",nullable = false)
-    private Integer cryptoId;
+    private String cryptocurrency;
 
     @Column(name = "cryptoAmount",nullable = false)
     private Double cryptoAmount;
@@ -35,19 +32,23 @@ public class TradingAudit {
     @Column(name = "shippingAddress",nullable = false)
     private String shippingAddress;
 
-    public TradingAudit(LocalDateTime hour, Integer cryptoId, Double cryptoAmount, Double cotization, String user, Double operationAmount, String shippingAddress, Integer actionType) {
+    @Column(name = "userOperations",nullable = false)
+    private Integer userOperations;
+
+    @Column(name ="userReputation", nullable = false)
+    private Double userReputation;
+
+    public TradingAudit(LocalDateTime hour,String cryptocurrency, Double cryptoAmount, Double cotization, String user, Double operationAmount, String shippingAddress, Integer userOperations, Double userReputation) {
         this.hour = hour;
-        this.cryptoId = cryptoId;
+        this.cryptocurrency = cryptocurrency;
         this.cryptoAmount = cryptoAmount;
         this.cotization = cotization;
         this.user = user;
         this.operationAmount = operationAmount;
         this.shippingAddress = shippingAddress;
-        this.actionType = actionType;
+        this.userOperations = userOperations;
+        this.userReputation = userReputation;
     }
-
-    @Column(name = "actionType",nullable = false)
-    private Integer actionType;
 
     public TradingAudit() {}
 
@@ -67,12 +68,12 @@ public class TradingAudit {
         this.hour = hour;
     }
 
-    public Integer getCryptoId() {
-        return cryptoId;
+    public String getCryptocurrency() {
+        return cryptocurrency;
     }
 
-    public void setCryptoId(Integer cryptoId) {
-        this.cryptoId = cryptoId;
+    public void setCryptocurrency(String crypto) {
+        this.cryptocurrency = crypto;
     }
 
     public Double getCryptoAmount() {
@@ -115,12 +116,21 @@ public class TradingAudit {
         this.shippingAddress = shippingAddress;
     }
 
-    public Integer getActionType() {
-        return actionType;
+    public Integer getUserOperations() {
+        return userOperations;
     }
 
-    public void setActionType(Integer actionType) {
-        this.actionType = actionType;
+    public void setUserOperations(Integer userOperations) {
+        this.userOperations = userOperations;
     }
+
+    public Double getUserReputation() {
+        return userReputation;
+    }
+
+    public void setUserReputation(Double userReputation) {
+        this.userReputation = userReputation;
+    }
+
 
 }

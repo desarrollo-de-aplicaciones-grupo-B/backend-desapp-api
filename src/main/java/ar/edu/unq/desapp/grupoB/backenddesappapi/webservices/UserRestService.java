@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -32,8 +31,28 @@ public class UserRestService {
         userService.updateUser(user,id);
     }
 
-    @GetMapping()
-    public Optional<User> userByName(@RequestParam ("name") String name){
-        return userService.findUserByName(name);
+    @PostMapping(value = "/{id}/newTrading")
+    public void openTrading(@RequestBody Integer cryptoId, Double cryptoAmount, Double cotization, Double operationAmount, @PathVariable("id")Integer id) {
+        userService.openTrading(id,cryptoId,cryptoAmount,cotization,operationAmount);
     }
+
+    @PutMapping(value ="/{id}/buy/{tradingId}")
+    public void buy(@PathVariable("id")Integer buyerId, @PathVariable("tradingId")Integer tradingId){
+        userService.buy(buyerId,tradingId);
+    }
+
+    @PutMapping(value="/{id}/confirmTransfer/{tradingId}")
+    public void confirmTransfer(@PathVariable("id")Integer buyerId, @PathVariable("tradingId")Integer tradingId){
+        userService.confirmTransfer(buyerId,tradingId);
+    }
+    @PutMapping(value="/{id}/confirmReception/{tradingId}")
+    public void confirmReception(@PathVariable("id")Integer sellerId, @PathVariable("tradingId")Integer tradingId){
+        userService.confirmReception(sellerId,tradingId);
+    }
+    @PutMapping(value="/{id}/cancel/{tradingId}")
+    public void cancel(@PathVariable("id")Integer userId, @PathVariable("tradingId")Integer tradingId){
+        userService.cancel(userId,tradingId);
+    }
+
+
 }

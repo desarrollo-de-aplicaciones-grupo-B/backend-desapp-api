@@ -45,12 +45,6 @@ public class CotizationService {
     public List<Cotization> findLast24HoursCotizations(String name){
         return this.cotizationRepository.findLast24HoursCotizations(name);
     }
-
-    public boolean cotizationIsOK(Integer cryptoId, Double tradingCotization) {
-        Optional<Cotization> systemCotization = findById(cryptoId);
-        return systemCotization.filter(cotization -> (tradingCotization.equals(cotization.getPriceCotization()))).isPresent();
-    }
-
     public void checkPriceMargin(Integer cryptoId, Double cotization) throws OutOfRangeCotizationException {
         Optional<Cotization> systemCotization = findById(cryptoId);
         if(systemCotization.isPresent()){

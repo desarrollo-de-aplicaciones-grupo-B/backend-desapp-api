@@ -121,7 +121,7 @@ public class User {
     }
 
     public void penalize() {
-        this.points =- Reputation.penalizationPoints();
+        this.points = Math.max(this.points - Reputation.penalizationPoints(), 0);
     }
 
     public void successfulTrading(Long timeDifference) {

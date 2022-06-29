@@ -86,14 +86,15 @@ public class UserService {
     }
 
     @Transactional
-    public void cancel(Integer userId,Integer tradingId){
+    public void cancel(Integer cancellerId,Integer tradingId){
         Trading trading = tradingService.findByID(tradingId);
-        User canceller = findByID(userId);
-        if(trading.getBuyerId().equals(userId)){
-            canceller.penalize();
-        } else
-        if(trading.getSellerId().equals(userId) && trading.getBuyerId() != null){ //If there is not a buyer yet the seller wont get penalized
-            canceller.penalize();
+        User canceller = findByID(cancellerId);
+        if(trading.getBuyerId() != null) { //If there is already a buyer then the canceller gets penalized
+            if (trading.getBuyerId().equals(cancellerId)) {
+                canceller.penalize();
+            } else if (trading.getSellerId().equals(cancellerId)) {
+                canceller.penalize();
+            }
         }
         tradingService.deleteById(trading.getIdOperation());
     }
@@ -106,31 +107,45 @@ public class UserService {
     }
 
     @Transactional
-    public void confirmReception(Integer userId,Integer tradingId){
+    public TradingAudit confirmReception(Integer userId,Integer tradingId) {
         Trading trading = tradingService.findByID(tradingId);
         LocalDateTime confirmationDate = LocalDateTime.now();
-        if(trading.getSellerId().equals(userId)) {
-            if(cotizationIsOK(trading.getCryptoId(), trading.getCotization())){
+        if (trading.getSellerId().equals(userId) && trading.isTransferConfirmed()) {
+            try {
+                checkPriceCotization(trading.getCryptoId(), trading.getCotization());
                 Long timeDifference = ChronoUnit.MINUTES.between(trading.getCreationDate(), confirmationDate);
                 User seller = findByID(userId);
                 User buyer = findByID(trading.getBuyerId());
                 seller.successfulTrading(timeDifference);
                 buyer.successfulTrading(timeDifference);
-
-                TradingAudit tAudit = new TradingAudit();
-                tAudit.setUser(seller.getName() + " " + seller.getLastname());
-                tAudit.setCotization(trading.getCotization());
-                tAudit.setCryptoAmount(trading.getCryptoAmount());
-                tAudit.setOperationAmount(trading.getOperationAmount());
-                tAudit.setHour(confirmationDate);
-                tAudit.setShippingAddress(seller.getAddress());
-                tradingAuditService.save(tAudit);
-            } else {
+                return createTransactionAudit(trading, seller, confirmationDate);
+            } catch (OutOfRangeCotizationException e) {
                 tradingService.deleteById(trading.getIdOperation());
+                //TODO Tirar excepcion y avisar que se canceló la trading
             }
+
+        } else if(!trading.getSellerId().equals(userId)){
+            //TODO confirma recepcion un id que no es el vendedor, not authorized exception?
         }
+        throw new Error(); //TODO transferencia no confirmada, tirar una excepcion o no?
     }
-    public boolean cotizationIsOK(Integer cryptoId, Double cotization){
-        return cotizationService.cotizationIsOK(cryptoId, cotization);
+
+    private TradingAudit createTransactionAudit(Trading trading, User seller, LocalDateTime confirmationDate) {
+        TradingAudit tAudit = new TradingAudit();
+        String cryptoName = cryptocurrencyService.findById(trading.getCryptoId()).get().getCryptoName();
+        tAudit.setCryptocurrency(cryptoName);
+        tAudit.setUser(seller.getName() + " " + seller.getLastname());
+        tAudit.setCotization(trading.getCotization());
+        tAudit.setCryptoAmount(trading.getCryptoAmount());
+        tAudit.setOperationAmount(trading.getOperationAmount());
+        tAudit.setHour(confirmationDate);
+        tAudit.setShippingAddress(seller.getAddress());
+        tAudit.setUserOperations(seller.getSuccessfulOperations());
+        tAudit.setUserReputation(seller.getReputation());
+        return tradingAuditService.save(tAudit);
+    }
+
+    public void checkPriceCotization(Integer cryptoId, Double cotization) throws OutOfRangeCotizationException {
+         cotizationService.checkPriceMargin(cryptoId, cotization);
     }
 }

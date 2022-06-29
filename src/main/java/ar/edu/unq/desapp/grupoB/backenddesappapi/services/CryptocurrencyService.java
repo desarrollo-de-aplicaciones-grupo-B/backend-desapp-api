@@ -16,8 +16,27 @@ public class CryptocurrencyService {
     private ICryptocurrencyRepository cryptocurrencyRepository;
 
     @Transactional
+    public List<Cryptocurrency> findAll(){
+        return this.cryptocurrencyRepository.findAll();
+    }
+
+    @Transactional
     public List<Cryptocurrency> getAllCryptocurrencyPrices() {
         return this.cryptocurrencyRepository.findAll();
     }
 
+    @Transactional
+    public Cryptocurrency getCryptoByName(String crypto_nomenclature){
+        return this.cryptocurrencyRepository.getCryptoByName(crypto_nomenclature);
+    }
+
+    @Transactional
+    public void saveCrypto(Cryptocurrency cryptocurrency){
+        cryptocurrencyRepository.save(cryptocurrency);
+    }
+
+    @Transactional
+    public void deleteById(Integer id){
+        cryptocurrencyRepository.deleteById(id);
+    }
 }

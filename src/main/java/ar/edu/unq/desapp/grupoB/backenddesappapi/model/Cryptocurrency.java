@@ -19,20 +19,13 @@ public class Cryptocurrency {
     @Column(name = "nomenclature", nullable = false, length = 10)
     private String nomenclature;
 
-    @Column(name = "date_last_cotization", nullable = false)
-    private Date dateLastCotization;
-
-    @Column(name = "cotization", nullable = false)
-    private Double cotization;
-
     public Cryptocurrency(){}
 
     public Cryptocurrency(Integer id, String cryptoName, String nomenclature, Date dateLastCotization, Double cotization) {
         this.id = id;
         this.cryptoName = cryptoName;
         this.nomenclature = nomenclature;
-        this.dateLastCotization = dateLastCotization;
-        this.cotization = cotization;
+
     }
 
     public Integer getId() {
@@ -59,19 +52,5 @@ public class Cryptocurrency {
         this.nomenclature = nomenclature;
     }
 
-    public Date getDateLastCotization() {
-        return dateLastCotization;
-    }
 
-    public void setDateLastCotization(Date dateLastCotization) {
-        this.dateLastCotization = dateLastCotization;
-    }
-
-    public Double getCotization() {
-        return cotization;
-    }
-
-    public void setCotization(Double cotization) {
-        this.cotization = cotization;
-    }
 }

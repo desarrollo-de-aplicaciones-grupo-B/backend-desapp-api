@@ -15,6 +15,8 @@ public abstract class Reputation {
         }
 
         public static Double calculate(Integer processedTransactions, Integer points) {
-            return (double)points/(double)processedTransactions;
+            if(processedTransactions > 0) {
+                return (double) points / (double) processedTransactions;
+            } else return 0.0;
         }
 }

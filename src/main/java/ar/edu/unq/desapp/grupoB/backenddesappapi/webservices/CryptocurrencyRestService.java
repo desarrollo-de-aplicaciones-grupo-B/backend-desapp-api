@@ -27,12 +27,12 @@ public class CryptocurrencyRestService {
 
     @PostMapping
     public void createCrypto(@RequestBody Cryptocurrency cryptocurrency){
-        cryptocurrencyService.saveCrypto(cryptocurrency);
+        cryptocurrencyService.save(cryptocurrency);
     }
 
     @PutMapping
     public void update(@RequestBody Cryptocurrency cryptocurrency){
-        cryptocurrencyService.saveCrypto(cryptocurrency);
+        cryptocurrencyService.save(cryptocurrency);
     }
 
     @DeleteMapping(value = "/{id}")

@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Date;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @SpringBootTest
 class BackendDesappApiApplicationTests {
@@ -31,15 +32,13 @@ class BackendDesappApiApplicationTests {
 	void contextLoads() throws OutOfRangeCotizationException {
 		Cryptocurrency crypto = new Cryptocurrency();
 		crypto.setCryptoName("testusd");
-		crypto.setCotization(12.0);
-		crypto.setDateLastCotization(Date.from(Instant.now()));
 		crypto.setNomenclature("nomenclat");
 		crypto.setId(1);
 		ccService.save(crypto);
 
 		Cotization cot = new Cotization();
 		cot.setId(1);
-		cot.setDateCotization(Date.from(Instant.now()));
+		cot.setDateCotization(LocalDateTime.now());
 		cot.setPriceCotization(12.0);
 		cService.save(cot);
 

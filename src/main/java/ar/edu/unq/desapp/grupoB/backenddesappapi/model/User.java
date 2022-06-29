@@ -1,25 +1,35 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.model;
 
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.boot.context.properties.bind.DefaultValue;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.WrongEmailFormatException;
 
 import javax.persistence.*;
+
+import static ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.EmailFormatAuthentication.patternMatches;
 
 @Entity
 @Table(name="user_table")
 public class User {
 
-    public User(String name, String lastname, String email, String address, String password, String cvu, String userWallet) {
+    public User(Integer id, String name, String lastname, String email, String address, String password, String cvu, String userWallet) throws Exception {
+        this.id = id;
         this.name = name;
         this.lastname = lastname;
         this.address = address;
         this.password = password;
         this.cvu = cvu;
         this.userWallet = userWallet;
+        this.points = 0;
+        this.successfulOperations = 0;
+
+        if(patternMatches(email)){
+            this.email = email;
+        }
+        else{
+            throw new WrongEmailFormatException("The email entered does not comply with the format");
+        }
     }
 
     public User(){  }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -45,15 +55,23 @@ public class User {
     @Column(name="user_wallet",nullable = false, length = 8)
     private String userWallet;
 
-    @Column(name="points")
-    private Integer points = 0;
+    @Column(name="reputation_points")
+    private Integer points;
 
-    @Column(name = "successfulOperations")
-    private Integer successfulOperations = 0;
+    @Column(name = "successful_operations")
+    private Integer successfulOperations;
 
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
+    public Integer getSuccessfulOperations() {
+        return successfulOperations;
+    }
+
+    public void setSuccessfulOperations(Integer successfulOperations) {
+        this.successfulOperations = successfulOperations;
+    }
+
+
+    public void setReputation(Integer points) {
+        this.points = points;
     }
 
     public Integer getId() {
@@ -120,27 +138,21 @@ public class User {
         this.userWallet = userWallet;
     }
 
+
+
+    public Double getReputation() {
+        if(successfulOperations>0){
+            return Reputation.calculate(successfulOperations, points);
+        } else{
+            return 0.0;
+        }
+    }
+
     public void penalize() {
         this.points = Math.max(this.points - Reputation.penalizationPoints(), 0);
     }
 
     public void successfulTrading(Long timeDifference) {
         this.points=+ Reputation.addPoints(timeDifference);
-    }
-
-    public Integer getPoints() {
-        return points;
-    }
-
-    public void setPoints(Integer points) {
-        this.points = points;
-    }
-
-    public Integer getSuccessfulOperations() {
-        return successfulOperations;
-    }
-
-    public void setSuccessfulOperations(Integer successfulOperations) {
-        this.successfulOperations = successfulOperations;
     }
 }

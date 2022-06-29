@@ -22,6 +22,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         if( userFounded == null){
             throw new UsernameNotFoundException("User not found");
         }
-        return (UserDetails) new User(userFounded.getEmail(),userFounded.getPassword());
+        return null;
+        //return (UserDetails) new User(userFounded.getEmail(),userFounded.getPassword());
     }
 }

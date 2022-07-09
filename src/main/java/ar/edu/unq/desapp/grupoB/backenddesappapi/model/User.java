@@ -4,6 +4,8 @@ import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.WrongEma
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
+
 import static ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.EmailFormatAuthentication.patternMatches;
 
 @Entity
@@ -57,6 +59,14 @@ public class User {
 
     @Column(name = "successful_operations")
     private Integer successfulOperations = 0;
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    public <E> User(String name, String password, ArrayList<E> es) {
+    }
 
     public Integer getSuccessfulOperations() {
         return successfulOperations;

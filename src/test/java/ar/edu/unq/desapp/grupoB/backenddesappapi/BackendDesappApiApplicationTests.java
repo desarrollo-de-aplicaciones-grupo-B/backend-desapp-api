@@ -2,7 +2,6 @@ package ar.edu.unq.desapp.grupoB.backenddesappapi;
 
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Cotization;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Cryptocurrency;
-import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Trading;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.OutOfRangeCotizationException;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.CotizationService;
@@ -13,8 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.sql.Date;
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 @SpringBootTest
@@ -28,8 +25,8 @@ class BackendDesappApiApplicationTests {
 	@Autowired
 	private TradingService tService;
 
-	@Test
-	void contextLoads() throws OutOfRangeCotizationException {
+	/*@Test
+	void contextLoads() throws OutOfRangeCotizationException, UserAlreadyExists {
 		Cryptocurrency crypto = new Cryptocurrency();
 		crypto.setCryptoName("testusd");
 		crypto.setNomenclature("nomenclat");
@@ -75,6 +72,6 @@ class BackendDesappApiApplicationTests {
 		uService.cancel(1,1);
 //		uService.confirmTransfer(2,1);
 //		uService.confirmReception(1,1);
-	}
+	}*/
 
 }

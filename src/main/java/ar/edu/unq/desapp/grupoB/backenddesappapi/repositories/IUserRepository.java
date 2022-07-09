@@ -18,6 +18,8 @@ public interface IUserRepository extends CrudRepository<User, Integer> {
 
     Optional<User> findUserByName(String username);
 
-    User findUsersByEmail(String email);
+    User findUserByEmail(String email);
+
+    Boolean existsUserByEmail (String email);
 
 }

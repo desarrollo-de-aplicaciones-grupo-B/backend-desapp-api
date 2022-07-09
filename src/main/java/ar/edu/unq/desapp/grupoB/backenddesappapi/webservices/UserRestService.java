@@ -1,7 +1,6 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.webservices;
 
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.CreateTransactionDTO;
-import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Trading;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +22,9 @@ public class UserRestService {
     }
 
     @PostMapping(path = "/register")
-    public ResponseEntity<String> register(@RequestBody User user){
-        userService.save(user);
-        return ResponseEntity.ok().body("The user was registered");
-    }
+    public void register(@RequestBody User user) {
+         userService.save(user);
 
-    @PostMapping(value = "/{id}")
-    public void updateUser(@RequestBody User user, @PathVariable ("id") Integer id){
-        userService.updateUser(user,id);
     }
 
     @PostMapping(value = "/{id}/newTrading")

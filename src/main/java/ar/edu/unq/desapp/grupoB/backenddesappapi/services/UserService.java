@@ -4,10 +4,14 @@ import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.CreateTransactionDTO;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Trading;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.TradingAudit;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.DefinedError;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.OutOfRangeCotizationException;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.UserValidation;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.repositories.IUserRepository;
+import org.omg.CORBA.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,7 +20,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Service("UserService")
 public class UserService {
 
     @Autowired
@@ -34,8 +38,14 @@ public class UserService {
     @Autowired
     private TradingService tradingService;
 
+
+
     @Transactional
     public void save(User user) {
+        if(userExists(user.getEmail())){
+            throw new UserValidation(DefinedError.ERROR_EMAIL_IS_IN_USE.getErrorCode(), DefinedError.ERROR_EMAIL_IS_IN_USE.getErrorMessage());
+        }
+
         this.userRepository.save(user);
     }
 
@@ -45,7 +55,7 @@ public class UserService {
     }
 
     @Transactional
-    public Optional<User> findUserByName(String name){
+    public Optional<User> findUserByName(String name) {
         return this.userRepository.findUserByName(name);
     }
 
@@ -55,21 +65,8 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteById(Integer id) {
-        this.userRepository.deleteById(id);
-    }
-
-    @Transactional
-    public void updateUser(User userUpdate, Integer userId){
-        Optional<User> userFound = userRepository.findById(userId);
-
-        User user = userFound.get();
-        user.setName(userUpdate.getName());
-        user.setLastname(userUpdate.getLastname());
-        user.setEmail(userUpdate.getEmail());
-        user.setAddress(userUpdate.getAddress());
-        user.setCvu(userUpdate.getCvu());
-        user.setUserWallet(userUpdate.getUserWallet());
+    public Boolean userExists (String email){
+        return this.userRepository.existsUserByEmail(email);
     }
 
     @Transactional

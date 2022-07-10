@@ -62,7 +62,7 @@ public class CotizationService {
 
     @Transactional
     public Cotization findLastCotization(String cryptoNomenclature){
-        Object o =  cotizationRepository.findLastCotization(cryptoNomenclature);
-        return new Cotization();
+        return cotizationRepository.findLastCotization(cryptoNomenclature);
+
     }
 }

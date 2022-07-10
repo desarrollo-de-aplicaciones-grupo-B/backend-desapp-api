@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.webservices;
 
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.CreateTransactionDTO;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.RegisterDTO;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class UserRestService {
     }
 
     @PostMapping(path = "/register")
-    public void register(@RequestBody User user) {
+    public void register(@RequestBody RegisterDTO user) {
          userService.save(user);
 
     }

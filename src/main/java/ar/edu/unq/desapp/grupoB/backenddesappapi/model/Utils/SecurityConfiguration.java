@@ -71,7 +71,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/authenticate").permitAll()
                 .antMatchers("/users/register").permitAll()
-                .antMatchers("/users/allUser").permitAll()
+                //.antMatchers("/users/allUser").permitAll()
                 // all other requests need to be authenticated
                         .antMatchers("/cotization/{crypto_name}").permitAll()
                         .antMatchers("/cotization").permitAll()

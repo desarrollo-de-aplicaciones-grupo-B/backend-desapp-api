@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.services;
 
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.CreateTransactionDTO;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.RegisterDTO;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Trading;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.TradingAudit;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
@@ -38,15 +39,23 @@ public class UserService {
     @Autowired
     private TradingService tradingService;
 
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void save(User user) {
+    public void save(RegisterDTO user) {
         if(userExists(user.getEmail())){
             throw new UserValidation(DefinedError.ERROR_EMAIL_IS_IN_USE.getErrorCode(), DefinedError.ERROR_EMAIL_IS_IN_USE.getErrorMessage());
         }
-
-        this.userRepository.save(user);
+        User userRegister = new User();
+        userRegister.setName(user.getName());
+        userRegister.setUserWallet(user.getUserWallet());
+        userRegister.setAddress(user.getAddress());
+        userRegister.setEmail(user.getEmail());
+        userRegister.setLastname(user.getLastname());
+        userRegister.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRegister.setCvu(user.getCvu());
+        this.userRepository.save(userRegister);
     }
 
     @Transactional
@@ -55,7 +64,7 @@ public class UserService {
     }
 
     @Transactional
-    public Optional<User> findUserByName(String name) {
+    public User findUserByName(String name) {
         return this.userRepository.findUserByName(name);
     }
 

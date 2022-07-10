@@ -1,23 +1,13 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.webservices;
-
-import ar.edu.unq.desapp.grupoB.backenddesappapi.model.BinanceCotization;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Cotization;
-import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Cryptocurrency;
-import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.CryptoCotizationDTO;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.CotizationService;
-import org.ietf.jgss.ChannelBinding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-
-import javax.websocket.server.PathParam;
-import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/cotization")
@@ -68,5 +58,10 @@ public class CotizationRestService {
     @DeleteMapping(value = "/{id}")
     public void deleteCotization(@PathVariable("id") Integer id){
         cotizationService.deleteById(id);
+    }
+
+    @GetMapping(value = "/last/{crypto_nomenclature}")
+    public Cotization getLastCotization(@PathVariable("crypto_nomenclature") String crypto_nomenclature){
+        return cotizationService.findLastCotization(crypto_nomenclature);
     }
 }

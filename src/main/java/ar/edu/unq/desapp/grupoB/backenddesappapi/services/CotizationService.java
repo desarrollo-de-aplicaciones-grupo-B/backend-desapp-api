@@ -59,4 +59,10 @@ public class CotizationService {
             }
         } //TODO throw error not found
     }
+
+    @Transactional
+    public Cotization findLastCotization(String cryptoNomenclature){
+        Object o =  cotizationRepository.findLastCotization(cryptoNomenclature);
+        return new Cotization();
+    }
 }

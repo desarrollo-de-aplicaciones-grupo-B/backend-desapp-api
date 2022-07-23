@@ -161,5 +161,6 @@ public class User {
 
     public void successfulTrading(Long timeDifference) {
         this.points=+ Reputation.addPoints(timeDifference);
+        this.successfulOperations=+1;
     }
 }

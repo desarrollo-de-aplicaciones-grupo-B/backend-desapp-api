@@ -101,11 +101,9 @@ public class UserService {
         Trading trading = tradingService.findByID(tradingId);
         User canceller = findByID(cancellerId);
         if(trading.getBuyerId() != null) { //If there is already a buyer then the canceller gets penalized
-            if (trading.getBuyerId().equals(cancellerId)) {
                 canceller.penalize();
-            } else if (trading.getSellerId().equals(cancellerId)) {
-                canceller.penalize();
-            }
+        } else if(trading.getSellerId() != cancellerId){ //User not authorized to cancel the trading
+            //TODO throw unauthorized
         }
         tradingService.deleteById(trading.getIdOperation());
     }
@@ -129,6 +127,7 @@ public class UserService {
                 User buyer = findByID(trading.getBuyerId());
                 seller.successfulTrading(timeDifference);
                 buyer.successfulTrading(timeDifference);
+                tradingService.deleteById(trading.getIdOperation());
                 return createTransactionAudit(trading, seller, confirmationDate);
             } catch (OutOfRangeCotizationException e) {
                 tradingService.deleteById(trading.getIdOperation());

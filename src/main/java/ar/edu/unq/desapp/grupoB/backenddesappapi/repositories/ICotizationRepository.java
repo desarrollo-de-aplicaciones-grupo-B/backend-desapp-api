@@ -23,4 +23,12 @@ public interface ICotizationRepository extends CrudRepository<Cotization, Intege
             "WHERE date_cotization BETWEEN NOW()- INTERVAL '1 DAY' AND NOW()"
             , nativeQuery = true)
     List<Cotization> findLast24HoursCotizations( @Param("crypto_name") String crypto_name );
+
+    @Query(value = "SELECT coti.id, coti.date_cotization, coti.price_cotization, coti.crypto_nomenclature "+
+            "FROM cotizations coti " +
+            "WHERE coti.crypto_nomenclature = :crypto_nomenclature " +
+            "ORDER BY coti.date_cotization desc " +
+            "LIMIT 1",
+            nativeQuery = true)
+    Cotization findLastCotization( @Param("crypto_nomenclature") String crypto_nomenclature);
 }

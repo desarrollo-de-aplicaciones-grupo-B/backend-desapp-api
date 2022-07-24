@@ -83,6 +83,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .antMatchers("/users/{id}/confirmReception/{tradingId}").permitAll()
                         .antMatchers("/users/{id}/cancel/{tradingId}").permitAll()
                         .antMatchers("/cotization/{id}/cancel/{tradingId}").permitAll()
+                        .antMatchers("/cotization/last/{crypto_nomenclature}").permitAll()
                         .anyRequest().authenticated().and().
                 // make sure we use stateless session; session won't be used to
                 // store user's state.

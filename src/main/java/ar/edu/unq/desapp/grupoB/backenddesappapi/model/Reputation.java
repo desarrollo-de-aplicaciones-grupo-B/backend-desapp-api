@@ -6,8 +6,8 @@ public abstract class Reputation {
             return 20;
         }
 
-        public static Integer addPoints(Long timeDifference) {
-            if(timeDifference<=30){
+        public static Integer pointsToAdd(Long minutes) {
+            if(minutes<=30){
                 return 10;
             } else {
                 return 5;

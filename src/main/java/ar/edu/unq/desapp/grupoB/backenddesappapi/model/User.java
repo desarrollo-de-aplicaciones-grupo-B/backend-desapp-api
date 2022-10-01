@@ -93,6 +93,14 @@ public class User {
         return name;
     }
 
+    public Integer getPoints() {
+        return points;
+    }
+
+    public void addPoints(Integer points){
+        this.points += points;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -148,19 +156,24 @@ public class User {
 
 
     public Double getReputation() {
-        if(successfulOperations>0){
-            return Reputation.calculate(successfulOperations, points);
+        if(this.getSuccessfulOperations()>0){
+            return Reputation.calculate(this.getSuccessfulOperations(), this.getPoints());
         } else{
             return 0.0;
         }
     }
 
     public void penalize() {
-        this.points = Math.max(this.points - Reputation.penalizationPoints(), 0);
+        this.points = Math.max(this.getPoints() - Reputation.penalizationPoints(), 0);
     }
 
     public void successfulTrading(Long timeDifference) {
-        this.points=+ Reputation.addPoints(timeDifference);
-        this.successfulOperations=+1;
+        this.addPoints(Reputation.pointsToAdd(timeDifference));
+        this.addSuccessfulOperation();
     }
+
+    private void addSuccessfulOperation() {
+        this.successfulOperations++;
+    }
+
 }

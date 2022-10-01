@@ -23,6 +23,7 @@ public class ArchitectureTests {
         classes().that().resideInAPackage("..model.DTO..")
                 .should().haveSimpleNameEndingWith("DTO").check(baseClasses);
     }
+
     @Test
     public void serviceClassesShouldEndWithService(){
         classes().that().resideInAPackage("..services..")
@@ -62,6 +63,7 @@ public class ArchitectureTests {
                 .should().beAnnotatedWith("org.springframework.web.bind.annotation.RestController")
                 .check(baseClasses);
     }
+
     @Test
     public void repositoryClassesShouldHaveRepositoryAnnotation(){
         classes().that().resideInAPackage("..repositories..")

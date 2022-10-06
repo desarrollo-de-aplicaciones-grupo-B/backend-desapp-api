@@ -9,6 +9,16 @@ public class RegisterDTO {
     private String cvu;
     private String userWallet;
 
+    public RegisterDTO(String name, String lastname, String email, String address, String password, String cvu, String userWallet) {
+        this.name = name;
+        this.lastname = lastname;
+        this.email = email;
+        this.address = address;
+        this.password = password;
+        this.cvu = cvu;
+        this.userWallet = userWallet;
+    }
+
     public String getName() {
         return name;
     }
@@ -64,4 +74,12 @@ public class RegisterDTO {
     public void setUserWallet(String userWallet) {
         this.userWallet = userWallet;
     }
+
+    @Override
+    public String toString(){
+        return "{\"name\": \"" + this.name + "\", \"lastname\": \"" + this.lastname + "\", \"email\": \"" + this.email + "\", \"address\": \"" + this.address + "\", " + "\"password\": \"" + this.password + "\", " +
+                "\"cvu\": \"" + this.cvu + "\" , " +
+                "\"userWallet\": \"" + this.userWallet + "\"}";
+    }
+
 }

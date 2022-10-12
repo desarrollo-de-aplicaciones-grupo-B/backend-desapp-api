@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.controller;
 
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.CreateTransactionDTO;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.RegisterDTO;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.UserService;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.webservices.UserRestService;
@@ -17,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -37,6 +39,29 @@ public class UserControllerTest {
                         .content(registerDTO.toString())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getAllUser() throws Exception{
+
+        mockMvc.perform(get("/users/allUser")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+    }
+
+    @Test
+    public void openTradingOk() throws Exception {
+
+        CreateTransactionDTO createTransactionDTO = new CreateTransactionDTO(4,20.00,222.2,200.0);
+
+        mockMvc.perform(post("/users/{id}/newTrading")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(createTransactionDTO.toString())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
     }
 
 

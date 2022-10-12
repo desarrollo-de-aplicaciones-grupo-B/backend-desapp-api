@@ -10,6 +10,7 @@ import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.OutOfRan
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.UserValidation;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.repositories.IUserRepository;
 import org.omg.CORBA.UserException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -47,7 +48,12 @@ public class UserService {
         if(userExists(user.getEmail())){
             throw new UserValidation(DefinedError.ERROR_EMAIL_IS_IN_USE.getErrorCode(), DefinedError.ERROR_EMAIL_IS_IN_USE.getErrorMessage());
         }
+
         User userRegister = new User();
+        BeanUtils.copyProperties(user, userRegister);
+        userRegister.setPassword(this.passwordEncoder.encode(user.getPassword()));
+
+/*        User userRegister = new User();
         userRegister.setName(user.getName());
         userRegister.setUserWallet(user.getUserWallet());
         userRegister.setAddress(user.getAddress());
@@ -56,6 +62,7 @@ public class UserService {
         userRegister.setPassword(passwordEncoder.encode(user.getPassword()));
         userRegister.setCvu(user.getCvu());
         this.userRepository.save(userRegister);
+ */
     }
 
     @Transactional

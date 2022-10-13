@@ -52,7 +52,7 @@ public class UserService {
         User userRegister = new User();
         BeanUtils.copyProperties(user, userRegister);
         userRegister.setPassword(this.passwordEncoder.encode(user.getPassword()));
-
+        this.userRepository.save(userRegister);
 /*        User userRegister = new User();
         userRegister.setName(user.getName());
         userRegister.setUserWallet(user.getUserWallet());

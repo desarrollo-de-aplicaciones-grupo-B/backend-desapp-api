@@ -54,9 +54,9 @@ public class UserControllerTest {
     @Test
     public void openTradingOk() throws Exception {
 
-        CreateTransactionDTO createTransactionDTO = new CreateTransactionDTO(4,20.00,222.2,200.0);
+        CreateTransactionDTO createTransactionDTO = new CreateTransactionDTO(1,20.00,11.7,200.0);
 
-        mockMvc.perform(post("/users/{id}/newTrading")
+        mockMvc.perform(post("/users/1/newTrading")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(createTransactionDTO.toString())
                 .accept(MediaType.APPLICATION_JSON))

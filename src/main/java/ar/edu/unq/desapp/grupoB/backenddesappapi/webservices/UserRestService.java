@@ -25,7 +25,6 @@ public class UserRestService {
     @PostMapping(path = "/register")
     public void register(@RequestBody RegisterDTO user) {
          userService.save(user);
-
     }
 
     @PostMapping(value = "/{id}/newTrading")

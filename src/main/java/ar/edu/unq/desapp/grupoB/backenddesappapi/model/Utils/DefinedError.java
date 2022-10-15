@@ -8,7 +8,16 @@ public enum DefinedError {
 
         @Override
         public String getErrorMessage(){return "The email is already in use, please choose another";}
+    },
+    ERROR_NAME_IS_IN_USE {
+        @Override
+        public Integer getErrorCode(){ return 102;}
+
+        @Override
+        public String getErrorMessage(){return "The username is already in use, please choose another";}
     };
+
+
 
     public abstract Integer getErrorCode();
 

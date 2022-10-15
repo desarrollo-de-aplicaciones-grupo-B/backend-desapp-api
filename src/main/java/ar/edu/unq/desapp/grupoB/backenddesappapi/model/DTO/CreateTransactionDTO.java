@@ -45,4 +45,10 @@ public class CreateTransactionDTO {
     public void setOperationAmount(Double operationAmount) {
         this.operationAmount = operationAmount;
     }
+
+    @Override
+    public String toString(){
+        return "{\"cryptoId\": \"" + this.cryptoId + "\", \"cryptoAmount\": \"" + this.cryptoAmount + "\", \"cotization\": \"" + this.cotization + "\", \"operationAmount\": \"" + this.operationAmount + "\"}";
+    }
+
 }

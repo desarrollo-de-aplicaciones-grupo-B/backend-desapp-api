@@ -22,4 +22,6 @@ public interface IUserRepository extends CrudRepository<User, Integer> {
 
     Boolean existsUserByEmail (String email);
 
+    Boolean existsUserByName (String name);
+
 }

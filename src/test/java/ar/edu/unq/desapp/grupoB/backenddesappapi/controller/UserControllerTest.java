@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -32,7 +33,7 @@ public class UserControllerTest {
     @Test
     public void registerOk() throws Exception {
 
-        RegisterDTO registerDTO = new RegisterDTO("Tobias","Torres","tobitest1@gmail.com","casalinda","1234","123456789","test");
+        RegisterDTO registerDTO = new RegisterDTO("TobiTest","Torres","tobitest1@gmail.com","casalinda","1234","123456789","test");
 
         mockMvc.perform(post("/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -48,7 +49,6 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-
     }
 
     @Test
@@ -62,6 +62,15 @@ public class UserControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
+    }
+
+    @Test
+    public void buyTradingOk() throws Exception {
+
+        mockMvc.perform(put("/users/7/buy/2")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
 

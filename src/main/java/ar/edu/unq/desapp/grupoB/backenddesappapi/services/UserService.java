@@ -45,24 +45,20 @@ public class UserService {
 
     @Transactional
     public void save(RegisterDTO user) {
-        if(userExists(user.getEmail())){
+
+        if(emailIsInUse(user.getEmail())){
             throw new UserValidation(DefinedError.ERROR_EMAIL_IS_IN_USE.getErrorCode(), DefinedError.ERROR_EMAIL_IS_IN_USE.getErrorMessage());
+        }
+        
+        if(nameIsInUse(user.getName())){
+            throw new UserValidation(DefinedError.ERROR_NAME_IS_IN_USE.getErrorCode(), DefinedError.ERROR_NAME_IS_IN_USE.getErrorMessage());
         }
 
         User userRegister = new User();
         BeanUtils.copyProperties(user, userRegister);
         userRegister.setPassword(this.passwordEncoder.encode(user.getPassword()));
         this.userRepository.save(userRegister);
-/*        User userRegister = new User();
-        userRegister.setName(user.getName());
-        userRegister.setUserWallet(user.getUserWallet());
-        userRegister.setAddress(user.getAddress());
-        userRegister.setEmail(user.getEmail());
-        userRegister.setLastname(user.getLastname());
-        userRegister.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRegister.setCvu(user.getCvu());
-        this.userRepository.save(userRegister);
- */
+
     }
 
     @Transactional
@@ -71,17 +67,17 @@ public class UserService {
     }
 
     @Transactional
-    public User findUserByName(String name) {
-        return this.userRepository.findUserByName(name);
-    }
-
-    @Transactional
     public List<User> findAll() {
         return this.userRepository.findAll();
     }
 
     @Transactional
-    public Boolean userExists (String email){
+    public Boolean nameIsInUse (String name){
+        return this.userRepository.existsUserByName(name);
+    }
+
+    @Transactional
+    public Boolean emailIsInUse (String email){
         return this.userRepository.existsUserByEmail(email);
     }
 

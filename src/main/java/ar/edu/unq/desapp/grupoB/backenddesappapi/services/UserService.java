@@ -8,11 +8,20 @@ import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.DefinedError;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.OutOfRangeCotizationException;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.UserValidation;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.security.JwtRequest;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.security.JwtResponse;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.security.JwtTokenUtil;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.repositories.IUserRepository;
 import org.omg.CORBA.UserException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +51,16 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private JwtUserDetailsService userDetailsService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
 
     @Transactional
     public void save(RegisterDTO user) {
@@ -90,6 +109,22 @@ public class UserService {
             //TODO throw 500?
         } catch (Exception e) { // Not found
             //TODO throw 404
+        }
+    }
+
+    public JwtResponse authenticate(JwtRequest authenticationRequest) {
+
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
+
+            UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+
+            String token = jwtTokenUtil.generateToken(userDetails);
+
+            return new JwtResponse(token);
+
+        } catch (AuthenticationException e) {
+            throw new UserValidation(DefinedError.INVALID_CREDENTIALS.getErrorCode(), DefinedError.INVALID_CREDENTIALS.getErrorMessage());
         }
     }
 

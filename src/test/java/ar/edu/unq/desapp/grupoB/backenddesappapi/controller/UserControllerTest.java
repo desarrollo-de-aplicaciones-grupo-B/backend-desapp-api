@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.grupoB.backenddesappapi.controller;
 
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.CreateTransactionDTO;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.RegisterDTO;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.security.JwtRequest;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.UserService;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.webservices.UserRestService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,12 +34,24 @@ public class UserControllerTest {
     @Test
     public void registerOk() throws Exception {
 
-        RegisterDTO registerDTO = new RegisterDTO("TobiTest","Torres","tobitest1@gmail.com","casalinda","1234","123456789","test");
+        RegisterDTO registerDTO = new RegisterDTO("TobiTesft33d14331","Torres","tobitefs2222t1433d24321@gmail.com","casalinda","1234","123456789","test");
 
         mockMvc.perform(post("/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(registerDTO.toString())
                         .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void loginOk() throws Exception {
+
+        JwtRequest jwtRequest = new JwtRequest("TobiTest","1234");
+
+        mockMvc.perform(post("/users/authenticate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jwtRequest.toString())
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
@@ -56,7 +69,7 @@ public class UserControllerTest {
 
         CreateTransactionDTO createTransactionDTO = new CreateTransactionDTO(1,20.00,11.7,200.0);
 
-        mockMvc.perform(post("/users/1/newTrading")
+        mockMvc.perform(post("/users/13/newTrading")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(createTransactionDTO.toString())
                 .accept(MediaType.APPLICATION_JSON))
@@ -67,11 +80,37 @@ public class UserControllerTest {
     @Test
     public void buyTradingOk() throws Exception {
 
-        mockMvc.perform(put("/users/7/buy/2")
+        mockMvc.perform(put("/users/14/buy/27")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
+   @Test
+   public void confirmTransferOk() throws Exception {
+
+      mockMvc.perform(put("/users/14/confirmTransfer/27")
+              .contentType(MediaType.APPLICATION_JSON)
+              .accept(MediaType.APPLICATION_JSON))
+              .andExpect(status().isOk());
+   }
+
+   @Test
+   public void confirmReceptionOk() throws Exception {
+
+       mockMvc.perform(put("/users/13/confirmReception/26")
+               .contentType(MediaType.APPLICATION_JSON)
+               .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk());
+   }
+
+   @Test
+   public void cancel() throws Exception {
+
+       mockMvc.perform(put("/users/13/cancel/38")
+               .contentType(MediaType.APPLICATION_JSON)
+               .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk());
+   }
 
 }

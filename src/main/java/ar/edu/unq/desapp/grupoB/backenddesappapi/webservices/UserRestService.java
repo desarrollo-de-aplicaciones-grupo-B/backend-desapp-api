@@ -3,9 +3,18 @@ package ar.edu.unq.desapp.grupoB.backenddesappapi.webservices;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.CreateTransactionDTO;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.RegisterDTO;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.security.JwtRequest;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.security.JwtResponse;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.security.JwtTokenUtil;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.services.JwtUserDetailsService;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -25,6 +34,11 @@ public class UserRestService {
     @PostMapping(path = "/register")
     public void register(@RequestBody RegisterDTO user) {
          userService.save(user);
+    }
+
+    @PostMapping(path = "/authenticate")
+    public ResponseEntity<?> login(@RequestBody JwtRequest authenticationRequest) {
+        return ResponseEntity.ok(userService.authenticate(authenticationRequest));
     }
 
     @PostMapping(value = "/{id}/newTrading")
@@ -48,8 +62,8 @@ public class UserRestService {
     }
 
     @PutMapping(value="/{id}/cancel/{tradingId}")
-    public void cancel(@PathVariable("id")Integer userId, @PathVariable("tradingId")Integer tradingId){
-        userService.cancel(userId,tradingId);
+    public void cancel(@PathVariable("id")Integer sellerId, @PathVariable("tradingId")Integer tradingId){
+        userService.cancel(sellerId,tradingId);
     }
 
 

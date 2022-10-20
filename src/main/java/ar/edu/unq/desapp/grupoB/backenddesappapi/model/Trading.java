@@ -7,6 +7,54 @@ import java.time.LocalDateTime;
 @Table(name="trading")
 public class Trading {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idOperation;
+
+    @Column(name = "cryptoId", nullable = false)
+    private Integer cryptoId;
+
+    @Column(name = "cryptoAmount", nullable = false)
+    private Double cryptoAmount;
+
+    @Column(name = "cotization", nullable = false)
+    private Double cotization;
+
+    @Column(name = "operationAmount", nullable = false)
+    private Double operationAmount;
+
+    @Column(name = "sellerId")
+    private Integer sellerId;
+
+    @Column(name = "buyerId")
+    private Integer buyerId;
+
+    @Column(name="creation_date")
+    private LocalDateTime creationDate;
+
+    @Column(name = "transferConfirmed")
+    private boolean transferConfirmed;
+
+    public void confirmTransfer(Integer buyerId) {
+        if(this.buyerId.equals(buyerId)) {
+            this.transferConfirmed = true;
+        } //TODO throw error?
+    }
+
+    public Trading(Integer cryptoId, Double cryptoAmount, Double cotization, Double operationAmount, Integer sellerId) {
+        this.cryptoId = cryptoId;
+        this.cryptoAmount = cryptoAmount;
+        this.cotization = cotization;
+        this.operationAmount = operationAmount;
+        this.sellerId = sellerId;
+        this.creationDate = LocalDateTime.now();
+        this.transferConfirmed = false;
+        this.buyerId = null;
+    }
+
+    public Trading(){}
+
+
 
     public Integer getIdOperation() {
         return idOperation;
@@ -66,50 +114,4 @@ public class Trading {
         return transferConfirmed;
     }
 
-    public Trading(Integer cryptoId, Double cryptoAmount, Double cotization, Double operationAmount, Integer sellerId) {
-        this.cryptoId = cryptoId;
-        this.cryptoAmount = cryptoAmount;
-        this.cotization = cotization;
-        this.operationAmount = operationAmount;
-        this.sellerId = sellerId;
-        this.creationDate = LocalDateTime.now();
-        this.transferConfirmed = false;
-        this.buyerId = null;
-    }
-
-    public Trading(){}
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idOperation;
-
-    @Column(name = "cryptoId", nullable = false)
-    private Integer cryptoId;
-
-    @Column(name = "cryptoAmount", nullable = false)
-    private Double cryptoAmount;
-
-    @Column(name = "cotization", nullable = false)
-    private Double cotization;
-
-    @Column(name = "operationAmount", nullable = false)
-    private Double operationAmount;
-
-    @Column(name = "sellerId")
-    private Integer sellerId;
-
-    @Column(name = "buyerId")
-    private Integer buyerId;
-
-    @Column(name="creation_date")
-    private LocalDateTime creationDate;
-
-    @Column(name = "transferConfirmed")
-    private boolean transferConfirmed;
-
-    public void confirmTransfer(Integer buyerId) {
-        if(this.buyerId.equals(buyerId)) {
-            this.transferConfirmed = true;
-        } //TODO throw error?
-    }
 }

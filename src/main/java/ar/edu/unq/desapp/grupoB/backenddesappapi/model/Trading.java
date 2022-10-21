@@ -1,5 +1,8 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.model;
 
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.DefinedError;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.UserValidation;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -38,7 +41,7 @@ public class Trading {
     public void confirmTransfer(Integer buyerId) {
         if(this.buyerId.equals(buyerId)) {
             this.transferConfirmed = true;
-        } //TODO throw error?
+        } else throw new UserValidation(DefinedError.USER_UNAUTHORIZED.getErrorCode(), "User not authorized to make changes in this trading");
     }
 
     public Trading(Integer cryptoId, Double cryptoAmount, Double cotization, Double operationAmount, Integer sellerId) {

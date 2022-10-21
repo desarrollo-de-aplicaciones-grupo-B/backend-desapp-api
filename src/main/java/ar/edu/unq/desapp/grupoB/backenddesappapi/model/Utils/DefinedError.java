@@ -51,7 +51,7 @@ public enum DefinedError {
         public Integer getErrorCode(){ return 404;}
 
         @Override
-        public String getErrorMessage() {return "Not Found";}
+        public String getErrorMessage() {return " not found";}
     };
 
     public abstract Integer getErrorCode();

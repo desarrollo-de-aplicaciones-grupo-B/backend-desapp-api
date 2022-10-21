@@ -28,11 +28,10 @@ public class UserRestService {
     @PostMapping(path = "/register")
     public ResponseEntity<User> register(@Valid @RequestBody RegisterDTO user) {
         return ResponseEntity.ok().body(userService.save(user));
-
     }
 
     @PostMapping(path = "/authenticate")
-    public ResponseEntity<?> login(@RequestBody JwtRequest authenticationRequest) {
+    public ResponseEntity<?> login(@Valid @RequestBody JwtRequest authenticationRequest) {
         return ResponseEntity.ok(userService.authenticate(authenticationRequest));
     }
 

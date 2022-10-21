@@ -44,7 +44,14 @@ public enum DefinedError {
         public Integer getErrorCode(){ return 409;}
 
         @Override
-        public String getErrorMessage() {return "The price is below or above system cotization by more than 5%";}
+        public String getErrorMessage() {return "The price is below or above system cotization by more than 5%, the trading has been cancelled";}
+    },
+    FORBIDDEN_ACTION {
+        @Override
+        public Integer getErrorCode() { return 403;}
+
+        @Override
+        public String getErrorMessage() { return "Unauthorized to perform this action";}
     },
     NOT_FOUND {
         @Override

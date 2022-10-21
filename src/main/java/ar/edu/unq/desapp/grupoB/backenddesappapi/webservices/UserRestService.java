@@ -2,10 +2,12 @@ package ar.edu.unq.desapp.grupoB.backenddesappapi.webservices;
 
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.CreateTransactionDTO;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.RegisterDTO;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Trading;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.security.JwtRequest;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +29,7 @@ public class UserRestService {
 
     @PostMapping(path = "/register")
     public ResponseEntity<User> register(@Valid @RequestBody RegisterDTO user) {
-        return ResponseEntity.ok().body(userService.save(user));
+        return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
 
     }
 
@@ -37,8 +39,8 @@ public class UserRestService {
     }
 
     @PostMapping(value = "/{id}/newTrading")
-    public ResponseEntity<?> openTrading(@Valid @RequestBody CreateTransactionDTO trading, @PathVariable("id")Integer id) {
-        return ResponseEntity.ok(userService.openTrading(id, trading));
+    public ResponseEntity<Trading> openTrading(@Valid @RequestBody CreateTransactionDTO trading, @PathVariable("id")Integer id) {
+        return new ResponseEntity<>(userService.openTrading(id, trading), HttpStatus.CREATED);
     }
 
     @PutMapping(value ="/{id}/buy/{tradingId}")
@@ -57,9 +59,7 @@ public class UserRestService {
     }
 
     @PutMapping(value="/{id}/cancel/{tradingId}")
-    public void cancel(@PathVariable("id")Integer sellerId, @PathVariable("tradingId")Integer tradingId){
-        userService.cancel(sellerId,tradingId);
+    public ResponseEntity<Trading> cancel(@PathVariable("id")Integer sellerId, @PathVariable("tradingId")Integer tradingId){
+       return new ResponseEntity<>(userService.cancel(sellerId,tradingId), HttpStatus.GONE);
     }
-
-
 }

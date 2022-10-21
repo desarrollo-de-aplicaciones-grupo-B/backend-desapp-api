@@ -41,7 +41,7 @@ public class Trading {
     public void confirmTransfer(Integer buyerId) {
         if(this.buyerId.equals(buyerId)) {
             this.transferConfirmed = true;
-        } else throw new UserValidation(DefinedError.USER_UNAUTHORIZED.getErrorCode(), "User not authorized to make changes in this trading");
+        } else throw new UserValidation(DefinedError.FORBIDDEN_ACTION.getErrorCode(), "User "+buyerId+" not authorized to confirm transfer");
     }
 
     public Trading(Integer cryptoId, Double cryptoAmount, Double cotization, Double operationAmount, Integer sellerId) {

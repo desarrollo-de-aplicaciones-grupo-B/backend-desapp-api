@@ -1,7 +1,18 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+
 public class RegisterDTO {
+
+    @NotNull(message = "The extras is required.")
+    @NotEmpty(message = "name shoulnd]t null")
+    //@NotBlank
     private String name;
+
+    @NotNull
     private String lastname;
     private String email;
     private String address;

@@ -1,6 +1,7 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions;
 
 public class UserValidation extends RuntimeException{
+
     private Integer errorCode;
 
     public UserValidation(Integer code, String message){

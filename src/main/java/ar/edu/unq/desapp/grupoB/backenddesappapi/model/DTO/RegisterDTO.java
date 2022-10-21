@@ -1,23 +1,29 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 
 public class RegisterDTO {
 
-    @NotNull(message = "The extras is required.")
-    @NotEmpty(message = "name shoulnd]t null")
-    //@NotBlank
+    @NotEmpty(message = "The name must not be empty")
     private String name;
 
-    @NotNull
+    @NotEmpty(message = "The lastname must not be empty")
     private String lastname;
+
+    @NotEmpty(message = "The email must not be empty")
     private String email;
+
+    @NotEmpty(message = "The address must not be empty")
     private String address;
+
+    @NotEmpty(message = "The password must not be empty")
     private String password;
+
+    @NotEmpty(message = "The cvu must not be empty")
     private String cvu;
+
+    @NotEmpty(message = "The userWallet must not be empty")
     private String userWallet;
 
     public RegisterDTO(String name, String lastname, String email, String address, String password, String cvu, String userWallet) {

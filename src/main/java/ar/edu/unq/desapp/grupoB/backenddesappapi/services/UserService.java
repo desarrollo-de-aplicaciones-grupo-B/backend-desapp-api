@@ -63,7 +63,7 @@ public class UserService {
 
 
     @Transactional
-    public void save(RegisterDTO user) {
+    public User save(RegisterDTO user) {
 
         if(emailIsInUse(user.getEmail())){
             throw new UserValidation(DefinedError.ERROR_EMAIL_IS_IN_USE.getErrorCode(), DefinedError.ERROR_EMAIL_IS_IN_USE.getErrorMessage());
@@ -76,7 +76,7 @@ public class UserService {
         User userRegister = new User();
         BeanUtils.copyProperties(user, userRegister);
         userRegister.setPassword(this.passwordEncoder.encode(user.getPassword()));
-        this.userRepository.save(userRegister);
+        return (this.userRepository.save(userRegister));
 
     }
 
@@ -101,14 +101,14 @@ public class UserService {
     }
 
     @Transactional
-    public void openTrading(Integer userId, CreateTransactionDTO createTransactionDTO) {
+    public Trading openTrading(Integer userId, CreateTransactionDTO createTransactionDTO) {
+
+        cotizationService.checkPriceMargin(createTransactionDTO.getCryptoId(), createTransactionDTO.getCotization());
         try {
-            cotizationService.checkPriceMargin(createTransactionDTO.getCryptoId(), createTransactionDTO.getCotization());
-            tradingService.save(new Trading(createTransactionDTO.getCryptoId(), createTransactionDTO.getCryptoAmount(), createTransactionDTO.getCotization(), createTransactionDTO.getOperationAmount(), userId));
-        } catch (OutOfRangeCotizationException e){
-            //TODO throw 500?
-        } catch (Exception e) { // Not found
-            //TODO throw 404
+            //TODO: revisar que cuando tira la excepcion tire el codigo de la misma.
+             return tradingService.save(new Trading(createTransactionDTO.getCryptoId(), createTransactionDTO.getCryptoAmount(), createTransactionDTO.getCotization(), createTransactionDTO.getOperationAmount(), userId));
+        } catch (Exception e) {
+            throw new UserValidation(DefinedError.NOT_FOUND.getErrorCode(),"User" + DefinedError.NOT_FOUND.getErrorMessage());
         }
     }
 

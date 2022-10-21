@@ -34,7 +34,7 @@ public class UserControllerTest {
     @Test
     public void registerOk() throws Exception {
 
-        RegisterDTO registerDTO = new RegisterDTO("TobiTesft33d14331","Torres","tobitefs2222t1433d24321@gmail.com","casalinda","1234","123456789","test");
+        RegisterDTO registerDTO = new RegisterDTO("TobiTe1","Torres","tobi@gmail.com","casalinda","1234","123456789","test");
 
         mockMvc.perform(post("/users/register")
                         .contentType(MediaType.APPLICATION_JSON)

@@ -1,5 +1,6 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils;
 
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.OutOfRangeCotizationException;
 import io.swagger.models.auth.In;
 
 public enum DefinedError {
@@ -37,6 +38,20 @@ public enum DefinedError {
 
         @Override
         public String getErrorMessage() {return "User not authorized to cancel the trading";}
+    },
+    OUT_OF_RANGE_COTIZATION {
+        @Override
+        public Integer getErrorCode(){ return 106;}
+
+        @Override
+        public String getErrorMessage() {return "The price is below or above system cotization by more than 5%";}
+    },
+    NOT_FOUND {
+        @Override
+        public Integer getErrorCode(){ return 404;}
+
+        @Override
+        public String getErrorMessage() {return "Not Found";}
     };
 
     public abstract Integer getErrorCode();

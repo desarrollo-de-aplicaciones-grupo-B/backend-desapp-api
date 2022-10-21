@@ -1,10 +1,23 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO;
 
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class CreateTransactionDTO {
 
+
+    @NotNull(message = "The cryptoId is required")
     private Integer cryptoId;
+
+    @NotNull(message = "The cryptoAmount is required")
     private Double cryptoAmount;
+
+    @NotNull(message = "The cotization is required")
     private Double cotization ;
+
+    @NotNull(message = "The operationAmount is required")
     private Double operationAmount;
 
     public CreateTransactionDTO(Integer cryptoId, Double cryptoAmount, Double cotization, Double operationAmount) {

@@ -43,7 +43,6 @@ public class GlobalExceptionHandlerController extends ResponseEntityExceptionHan
         body.put("errors", errors);
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
-
     }
 }
 

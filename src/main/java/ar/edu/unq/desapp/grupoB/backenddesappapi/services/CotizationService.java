@@ -41,7 +41,7 @@ public class CotizationService {
     }
 
     @Transactional
-    @Cacheable(cacheNames = "cryptoCotization", key = "#id")
+    @Cacheable(cacheNames = "cryptoCotization")
     public List<Cotization> findAll(){
         addDelay();
         return this.cotizationRepository.findAll();

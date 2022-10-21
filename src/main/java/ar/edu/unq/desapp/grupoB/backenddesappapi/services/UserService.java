@@ -29,6 +29,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service("UserService")
@@ -68,7 +69,7 @@ public class UserService {
         if(emailIsInUse(user.getEmail())){
             throw new UserValidation(DefinedError.ERROR_EMAIL_IS_IN_USE.getErrorCode(), DefinedError.ERROR_EMAIL_IS_IN_USE.getErrorMessage());
         }
-        
+
         if(nameIsInUse(user.getName())){
             throw new UserValidation(DefinedError.ERROR_NAME_IS_IN_USE.getErrorCode(), DefinedError.ERROR_NAME_IS_IN_USE.getErrorMessage());
         }
@@ -103,13 +104,11 @@ public class UserService {
     @Transactional
     public Trading openTrading(Integer userId, CreateTransactionDTO createTransactionDTO) {
 
-        cotizationService.checkPriceMargin(createTransactionDTO.getCryptoId(), createTransactionDTO.getCotization());
-        try {
-            //TODO: revisar que cuando tira la excepcion tire el codigo de la misma.
+       if(this.findByID(userId) != null){
+            cotizationService.checkPriceMargin(createTransactionDTO.getCryptoId(), createTransactionDTO.getCotization());
              return tradingService.save(new Trading(createTransactionDTO.getCryptoId(), createTransactionDTO.getCryptoAmount(), createTransactionDTO.getCotization(), createTransactionDTO.getOperationAmount(), userId));
-        } catch (Exception e) {
-            throw new UserValidation(DefinedError.NOT_FOUND.getErrorCode(),"User" + DefinedError.NOT_FOUND.getErrorMessage());
-        }
+        } else throw new UserValidation(DefinedError.NOT_FOUND.getErrorCode(),"User "+userId + DefinedError.NOT_FOUND.getErrorMessage());
+
     }
 
     public JwtResponse authenticate(JwtRequest authenticationRequest) {
@@ -130,53 +129,64 @@ public class UserService {
 
     @Transactional
     public void buy(Integer userId, Integer tradingId){
-        Trading trading = tradingService.findByID(tradingId);
-        trading.setBuyerId(userId);
+        if(this.findByID(userId) != null) {
+            Trading trading = tradingService.findByID(tradingId);
+            trading.setBuyerId(userId);
+        } else throw new UserValidation(DefinedError.NOT_FOUND.getErrorCode(), "User "+userId+DefinedError.NOT_FOUND.getErrorMessage());
     }
 
     @Transactional
-    public void cancel(Integer cancellerId,Integer tradingId){
-        Trading trading = tradingService.findByID(tradingId);
-        User canceller = findByID(cancellerId);
-        if(trading.getBuyerId() != null) { //If there is already a buyer then the canceller gets penalized
+    public Trading cancel(Integer cancellerId,Integer tradingId){
+        if(this.findByID(cancellerId) != null) {
+            Trading trading = tradingService.findByID(tradingId);
+            User canceller = findByID(cancellerId);
+            if (trading.getBuyerId() != null) { //If there is already a buyer then the canceller gets penalized
                 canceller.penalize();
-        } else if(trading.getSellerId() != cancellerId){ //User not authorized to cancel the trading
-            //TODO throw unauthorized
-        }
-        tradingService.deleteById(trading.getIdOperation());
+            } else if (!Objects.equals(trading.getSellerId(), cancellerId)) { //User not authorized to cancel the trading
+                throw new UserValidation(DefinedError.FORBIDDEN_ACTION.getErrorCode(), "User "+cancellerId+ " not authorized to cancel the trading");
+            }
+            tradingService.deleteById(trading.getIdOperation());
+            return trading;
+        } else throw new UserValidation(DefinedError.NOT_FOUND.getErrorCode(), "User "+cancellerId+ DefinedError.NOT_FOUND.getErrorMessage());
     }
 
     @Transactional
     public void confirmTransfer(Integer userId,Integer tradingId){
-        Trading trading = tradingService.findByID(tradingId);
-        trading.confirmTransfer(userId);
-        tradingService.updateTrading(trading);
+        if(this.findByID(userId) != null) {
+            Trading trading = tradingService.findByID(tradingId);
+            trading.confirmTransfer(userId);
+            tradingService.updateTrading(trading);
+        } else throw new UserValidation(DefinedError.NOT_FOUND.getErrorCode(), "User "+userId+DefinedError.NOT_FOUND.getErrorMessage());
     }
 
     @Transactional
     public TradingAudit confirmReception(Integer userId,Integer tradingId) {
-        Trading trading = tradingService.findByID(tradingId);
-        LocalDateTime confirmationDate = LocalDateTime.now();
-        if (trading.getSellerId().equals(userId) && trading.isTransferConfirmed()) {
-            try {
-                checkPriceCotization(trading.getCryptoId(), trading.getCotization());
-                Long timeDifference = ChronoUnit.MINUTES.between(trading.getCreationDate(), confirmationDate);
-                User seller = findByID(userId);
-                User buyer = findByID(trading.getBuyerId());
-                seller.successfulTrading(timeDifference);
-                buyer.successfulTrading(timeDifference);
-                tradingService.deleteById(trading.getIdOperation());
-                return createTransactionAudit(trading, seller, confirmationDate);
-            } catch (OutOfRangeCotizationException e) {
-                tradingService.deleteById(trading.getIdOperation());
-                //TODO Tirar excepcion y avisar que se canceló la trading
+        if(this.findByID(userId) != null) {
+            Trading trading = tradingService.findByID(tradingId);
+            LocalDateTime confirmationDate = LocalDateTime.now();
+            if (trading.getSellerId().equals(userId) && trading.isTransferConfirmed()) {
+                try {
+                    checkPriceCotization(trading.getCryptoId(), trading.getCotization());
+                    Long timeDifference = ChronoUnit.MINUTES.between(trading.getCreationDate(), confirmationDate);
+                    User seller = findByID(userId);
+                    User buyer = findByID(trading.getBuyerId());
+                    seller.successfulTrading(timeDifference);
+                    buyer.successfulTrading(timeDifference);
+                    tradingService.deleteById(trading.getIdOperation());
+                    return createTransactionAudit(trading, seller, confirmationDate);
+                } catch (OutOfRangeCotizationException e) {
+                    tradingService.deleteById(trading.getIdOperation());
+                    throw new UserValidation(DefinedError.OUT_OF_RANGE_COTIZATION.getErrorCode(),DefinedError.OUT_OF_RANGE_COTIZATION.getErrorMessage());
+                }
+            } else if(!trading.getSellerId().equals(userId)){
+               throw new UserValidation(DefinedError.FORBIDDEN_ACTION.getErrorCode(), "User "+userId+" not authorized to confirm reception");
             }
-
-        } else if(!trading.getSellerId().equals(userId)){
-            //TODO confirma recepcion un id que no es el vendedor, not authorized exception?
+            throw new UserValidation(DefinedError.FORBIDDEN_ACTION.getErrorCode(), "Transfer not confirmed yet");
         }
-        throw new Error(); //TODO transferencia no confirmada, tirar una excepcion o no?
+        else throw new UserValidation(DefinedError.NOT_FOUND.getErrorCode(), "User "+userId+DefinedError.NOT_FOUND.getErrorMessage());
     }
+
+
 
     @Transactional
     public TradingAudit createTransactionAudit(Trading trading, User seller, LocalDateTime confirmationDate) {

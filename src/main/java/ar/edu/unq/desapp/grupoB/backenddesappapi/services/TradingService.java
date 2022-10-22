@@ -5,7 +5,6 @@ import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Trading;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.DefinedError;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.UserValidation;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.repositories.ITradingRepository;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -29,6 +29,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -108,7 +109,6 @@ public class UserService {
             cotizationService.checkPriceMargin(createTransactionDTO.getCryptoId(), createTransactionDTO.getCotization());
              return tradingService.save(new Trading(createTransactionDTO.getCryptoId(), createTransactionDTO.getCryptoAmount(), createTransactionDTO.getCotization(), createTransactionDTO.getOperationAmount(), userId));
         } else throw new UserValidation(DefinedError.NOT_FOUND.getErrorCode(),"User "+userId + DefinedError.NOT_FOUND.getErrorMessage());
-
     }
 
     public JwtResponse authenticate(JwtRequest authenticationRequest) {
@@ -129,10 +129,13 @@ public class UserService {
 
     @Transactional
     public void buy(Integer userId, Integer tradingId){
-        if(this.findByID(userId) != null) {
+        try{
+            this.findByID(userId);
             Trading trading = tradingService.findByID(tradingId);
             trading.setBuyerId(userId);
-        } else throw new UserValidation(DefinedError.NOT_FOUND.getErrorCode(), "User "+userId+DefinedError.NOT_FOUND.getErrorMessage());
+        } catch (NoSuchElementException e){
+            throw new UserValidation(DefinedError.NOT_FOUND.getErrorCode(), "User "+userId+DefinedError.NOT_FOUND.getErrorMessage());
+        }
     }
 
     @Transactional

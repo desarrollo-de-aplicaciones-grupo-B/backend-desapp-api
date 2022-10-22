@@ -60,7 +60,6 @@ public class UserRestServiceTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(anyUser().toString())
                 .accept(MediaType.APPLICATION_JSON));
-
     }
 
     @Test
@@ -72,7 +71,7 @@ public class UserRestServiceTest {
                         .content(registerDTO.toString())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
-        verify(userService).save(ArgumentMatchers.refEq(registerDTO));
+        verify(userService,times(2)).save(any(RegisterDTO.class));
     }
 
     @Test
@@ -89,7 +88,7 @@ public class UserRestServiceTest {
     }
     @Test
     public void emailAlreadyTakenTest() throws Exception{
-        when(userService.save(ArgumentMatchers.refEq(anyUser()))).thenCallRealMethod();
+        when(userService.save(any(RegisterDTO.class))).thenCallRealMethod();
         when(userService.emailIsInUse("any@email.com")).thenReturn(true);
 
         RegisterDTO existingEmailUser =anyUser();
@@ -100,12 +99,12 @@ public class UserRestServiceTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict())
                 .andExpect(content().json("{'errorMessage': 'The email is already in use, please choose another'}"));
-        verify(userService,atLeastOnce()).save(ArgumentMatchers.refEq(anyUser()));
+        verify(userService,atLeastOnce()).save(any(RegisterDTO.class));
         verify(userService).emailIsInUse("any@email.com");
     }
     @Test
     public void nameAlreadyTakenTest() throws Exception{
-        when(userService.save(ArgumentMatchers.refEq(anyUser()))).thenCallRealMethod();
+        when(userService.save(any(RegisterDTO.class))).thenCallRealMethod();
         when(userService.emailIsInUse(anyUser().getEmail())).thenReturn(false);
         when(userService.nameIsInUse("anyname")).thenReturn(true);
 
@@ -117,7 +116,7 @@ public class UserRestServiceTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict())
                 .andExpect(content().json("{'errorMessage': 'The username is already in use, please choose another'}"));
-        verify(userService,atLeastOnce()).save(ArgumentMatchers.refEq(anyUser()));
+        verify(userService,atLeastOnce()).save(any(RegisterDTO.class));
         verify(userService, atLeastOnce()).nameIsInUse("anyname");
     }
     @Test
@@ -130,13 +129,13 @@ public class UserRestServiceTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(userService).authenticate(ArgumentMatchers.refEq((expectedUsernamePassword)));
+        verify(userService).authenticate(any(JwtRequest.class));
     }
 
     @Test
     public void authenticationFailed() throws Exception {
         JwtRequest wrongUserOrPassword = new JwtRequest("anyname","wrongpassword");
-        when(userService.authenticate(ArgumentMatchers.refEq(wrongUserOrPassword))).thenThrow(new UserValidation(DefinedError.INVALID_CREDENTIALS.getErrorCode(), DefinedError.INVALID_CREDENTIALS.getErrorMessage()));
+        when(userService.authenticate(any(JwtRequest.class))).thenThrow(new UserValidation(DefinedError.INVALID_CREDENTIALS.getErrorCode(), DefinedError.INVALID_CREDENTIALS.getErrorMessage()));
 
         mockMvc.perform(post("/users/authenticate")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -145,7 +144,7 @@ public class UserRestServiceTest {
                 .andExpect(status().isUnauthorized())
                 .andExpect(content().json("{'errorMessage': 'Invalid Credentials'}"));
 
-        verify(userService).authenticate(ArgumentMatchers.refEq((wrongUserOrPassword)));
+        verify(userService).authenticate(any(JwtRequest.class));
     }
     @Test
     public void getAllUser() throws Exception{
@@ -166,12 +165,12 @@ public class UserRestServiceTest {
                 .content(anyTransaction().toString())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
-        verify(userService).openTrading(eq(1), ArgumentMatchers.refEq((anyTransaction())));
+        verify(userService).openTrading(eq(1), any(CreateTransactionDTO.class));
     }
 
     @Test
     public void openTradingThrowsOutOfRangeCotizationError() throws Exception {
-        when(userService.openTrading(eq(1),ArgumentMatchers.refEq(anyTransaction())))
+        when(userService.openTrading(eq(1),any(CreateTransactionDTO.class)))
                 .thenThrow(new UserValidation(DefinedError.OUT_OF_RANGE_COTIZATION.getErrorCode(), "The price is below system cotization by more than 5%"));
         mockMvc.perform(post("/users/1/newTrading")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -179,7 +178,7 @@ public class UserRestServiceTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict())
                 .andExpect(content().json("{'errorMessage': 'The price is below system cotization by more than 5%'}"));
-        verify(userService).openTrading(eq(1), ArgumentMatchers.refEq((anyTransaction())));
+        verify(userService).openTrading(eq(1), any(CreateTransactionDTO.class));
     }
 
     @Test

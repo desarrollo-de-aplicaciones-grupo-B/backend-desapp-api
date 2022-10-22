@@ -6,7 +6,6 @@ import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Trading;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.TradingAudit;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.DefinedError;
-import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.OutOfRangeCotizationException;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.UserValidation;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.security.JwtRequest;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.security.JwtResponse;
@@ -28,7 +27,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service("UserService")
 public class UserService {
@@ -174,7 +172,7 @@ public class UserService {
                     buyer.successfulTrading(timeDifference);
                     tradingService.deleteById(trading.getIdOperation());
                     return createTransactionAudit(trading, seller, confirmationDate);
-                } catch (OutOfRangeCotizationException e) {
+                } catch (UserValidation e) {
                     tradingService.deleteById(trading.getIdOperation());
                     throw new UserValidation(DefinedError.OUT_OF_RANGE_COTIZATION.getErrorCode(),DefinedError.OUT_OF_RANGE_COTIZATION.getErrorMessage());
                 }
@@ -204,7 +202,7 @@ public class UserService {
         return tradingAuditService.save(tAudit);
     }
 
-    public void checkPriceCotization(Integer cryptoId, Double cotization) throws OutOfRangeCotizationException {
+    public void checkPriceCotization(Integer cryptoId, Double cotization) throws UserValidation {
          cotizationService.checkPriceMargin(cryptoId, cotization);
     }
 }

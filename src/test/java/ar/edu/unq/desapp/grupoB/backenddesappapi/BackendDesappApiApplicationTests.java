@@ -1,18 +1,11 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi;
 
-import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Cotization;
-import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Cryptocurrency;
-import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
-import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.OutOfRangeCotizationException;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.CotizationService;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.CryptocurrencyService;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.TradingService;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.UserService;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.time.LocalDateTime;
 
 @SpringBootTest
 class BackendDesappApiApplicationTests {

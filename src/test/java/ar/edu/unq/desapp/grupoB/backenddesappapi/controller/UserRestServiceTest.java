@@ -2,6 +2,7 @@ package ar.edu.unq.desapp.grupoB.backenddesappapi.controller;
 
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.CreateTransactionDTO;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.RegisterDTO;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.DefinedError;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.UserValidation;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.security.JwtRequest;
@@ -9,6 +10,7 @@ import ar.edu.unq.desapp.grupoB.backenddesappapi.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -46,9 +48,6 @@ public class UserRestServiceTest {
 
     @MockBean
     private UserService userService;
-
-
-
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -203,7 +202,7 @@ public class UserRestServiceTest {
     @Test
     public void nonExistentUserBuyTrading() throws Exception {
         doCallRealMethod().when(userService).buy(99,27);
-        when(userService.findByID(99)).thenReturn(null);
+        when(userService.findByID(99)).thenThrow(new UserValidation(DefinedError.NOT_FOUND.getErrorCode(),"User 99"+DefinedError.NOT_FOUND.getErrorMessage()));
         mockMvc.perform(put("/users/99/buy/27")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))

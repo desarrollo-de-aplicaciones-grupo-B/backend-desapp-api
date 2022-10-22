@@ -1,8 +1,5 @@
 package ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils;
 
-import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.OutOfRangeCotizationException;
-import io.swagger.models.auth.In;
-
 public enum DefinedError {
 
     ERROR_EMAIL_IS_IN_USE {

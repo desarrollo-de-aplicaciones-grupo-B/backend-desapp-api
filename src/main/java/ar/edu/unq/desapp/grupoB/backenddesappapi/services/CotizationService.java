@@ -3,7 +3,6 @@ package ar.edu.unq.desapp.grupoB.backenddesappapi.services;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Cotization;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Cryptocurrency;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.DefinedError;
-import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.OutOfRangeCotizationException;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.UserValidation;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.repositories.ICotizationRepository;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.repositories.ICryptocurrencyRepository;

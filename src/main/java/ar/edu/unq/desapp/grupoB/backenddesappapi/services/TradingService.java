@@ -2,7 +2,10 @@ package ar.edu.unq.desapp.grupoB.backenddesappapi.services;
 
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.TradingUserDTO;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Trading;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.DefinedError;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.UserValidation;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.repositories.ITradingRepository;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class TradingService {
@@ -27,12 +31,20 @@ public class TradingService {
 
     @Transactional
     public Trading findByID(Integer id) {
-        return this.tradingRepository.findById(id).get();
+        try {
+            return this.tradingRepository.findById(id).get();
+        } catch (NoSuchElementException e){
+            throw new UserValidation(DefinedError.NOT_FOUND.getErrorCode(), "Trading "+id+ DefinedError.NOT_FOUND.getErrorMessage());
+        }
     }
 
     @Transactional
     public void deleteById(Integer id) {
-        this.tradingRepository.deleteById(id);
+        try {
+            this.tradingRepository.deleteById(id);
+        } catch (NoSuchElementException e){
+            throw new UserValidation(DefinedError.NOT_FOUND.getErrorCode(), "Trading "+id+ DefinedError.NOT_FOUND.getErrorMessage());
+        }
     }
 
     @Transactional

@@ -2,10 +2,12 @@ package ar.edu.unq.desapp.grupoB.backenddesappapi.controller;
 
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.CreateTransactionDTO;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.DTO.RegisterDTO;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Trading;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.User;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.DefinedError;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.Exceptions.UserValidation;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.security.JwtRequest;
+import ar.edu.unq.desapp.grupoB.backenddesappapi.services.TradingService;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,6 +47,9 @@ public class UserRestServiceTest {
     private CreateTransactionDTO anyTransaction(){
         return new CreateTransactionDTO(1,54.87,23.6, 543.5);
     };
+
+    @Mock
+    private Trading anyTrading;
 
     @MockBean
     private UserService userService;
@@ -179,15 +184,15 @@ public class UserRestServiceTest {
 
     @Test
     public void nonExistentUserOpenTrading() throws Exception {
-        when(userService.openTrading(eq(99),ArgumentMatchers.refEq(anyTransaction()))).thenCallRealMethod();
-        when(userService.findByID(99)).thenReturn(null);
+        when(userService.openTrading(eq(99),any())).thenCallRealMethod();
+        when(userService.findByID(99)).thenThrow(new UserValidation(DefinedError.NOT_FOUND.getErrorCode(), "User 99"+DefinedError.NOT_FOUND.getErrorMessage() ));
         mockMvc.perform(post("/users/99/newTrading")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(anyTransaction().toString())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(content().json("{'errorMessage': 'User 99 not found'}"));
-        verify(userService).openTrading(eq(99), ArgumentMatchers.refEq((anyTransaction())));
+        verify(userService).openTrading(eq(99), any());
     }
 
     @Test
@@ -248,6 +253,7 @@ public class UserRestServiceTest {
                        .accept(MediaType.APPLICATION_JSON))
                .andExpect(status().isForbidden())
                .andExpect(content().json("{'errorMessage': 'User 13 not authorized to confirm reception'}"));
+       verify(userService).confirmReception(13,26);
    }
     @Test
     public void confirmReceptionThrowsOutOfRangeCotizationError() throws Exception {
@@ -258,6 +264,7 @@ public class UserRestServiceTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict())
                 .andExpect(content().json("{'errorMessage': 'The price is below or above system cotization by more than 5%, the trading has been cancelled'}"));
+        verify(userService).confirmReception(13,26);
     }
     @Test
     public void confirmReceptionTryWhenTransferNotConfirmedYet() throws Exception {
@@ -268,15 +275,17 @@ public class UserRestServiceTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
                 .andExpect(content().json("{'errorMessage': 'Transfer not confirmed yet'}"));
+        verify(userService).confirmReception(13,26);
     }
 
    @Test
    public void cancel() throws Exception {
-
+    when(userService.cancel(any(),any())).thenReturn(anyTrading);
        mockMvc.perform(put("/users/13/cancel/38")
                .contentType(MediaType.APPLICATION_JSON)
                .accept(MediaType.APPLICATION_JSON))
                .andExpect(status().isGone());
+       verify(userService).cancel(13,38);
    }
     @Test
     public void userUnauthorizedToCancel() throws Exception {
@@ -287,6 +296,17 @@ public class UserRestServiceTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
                 .andExpect(content().json("{'errorMessage': 'User 13 not authorized to cancel the trading'}"));
+        verify(userService).cancel(13,38);
     }
-
+    @Test
+    public void cancelThrowsTradingNotFoundException() throws Exception {
+        doThrow(new UserValidation(DefinedError.NOT_FOUND.getErrorCode(), "Trading 38" + DefinedError.NOT_FOUND.getErrorMessage()))
+                .when(userService).cancel(13, 38);
+        mockMvc.perform(put("/users/13/cancel/38")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(content().json("{'errorMessage': 'Trading 38 not found'}"));
+        verify(userService).cancel(13, 38);
+    }
 }

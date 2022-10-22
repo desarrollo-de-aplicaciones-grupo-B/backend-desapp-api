@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(classes = ar.edu.unq.desapp.grupoB.backenddesappapi.BackendDesappApiApplication.class)
 @AutoConfigureMockMvc(addFilters = false)
-public class UserControllerTest {
+public class UserRestServiceTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -81,7 +81,7 @@ public class UserControllerTest {
                         .content(badDTO.toString())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().json("{\n 'errors': [\n\t\t'name shoulndt be null'\n\t]}"));
+                .andExpect(content().json("{\n 'errors': [\n\t\t'The name must not be empty'\n\t]}"));
     }
     @Test
     public void emailAlreadyTakenTest() throws Exception{

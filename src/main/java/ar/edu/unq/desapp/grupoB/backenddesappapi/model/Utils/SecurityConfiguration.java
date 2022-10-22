@@ -3,6 +3,7 @@ package ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.security.JwtAuthenticationEntryPoint;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.security.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableCaching
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 

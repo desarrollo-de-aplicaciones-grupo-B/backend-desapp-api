@@ -10,6 +10,7 @@ import ar.edu.unq.desapp.grupoB.backenddesappapi.repositories.ICryptocurrencyRep
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.cache.annotation.Cacheable;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +43,9 @@ public class CotizationService {
     }
 
     @Transactional
+    @Cacheable(cacheNames = "cryptoCotization")
     public List<Cotization> findAll(){
+        addDelay();
         return this.cotizationRepository.findAll();
     }
 
@@ -68,5 +71,16 @@ public class CotizationService {
     public Cotization findLastCotization(String cryptoNomenclature){
         return cotizationRepository.findLastCotization(cryptoNomenclature);
 
+    }
+
+
+    public void addDelay(){
+        try{
+            long time = 5000L;
+            Thread.sleep(time);
+        }
+        catch(Exception e){
+            throw new IllegalStateException(e);
+        }
     }
 }

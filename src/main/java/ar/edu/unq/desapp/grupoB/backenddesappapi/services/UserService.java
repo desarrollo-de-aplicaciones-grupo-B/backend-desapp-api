@@ -12,13 +12,10 @@ import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.security.JwtRequest
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.security.JwtResponse;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.model.Utils.security.JwtTokenUtil;
 import ar.edu.unq.desapp.grupoB.backenddesappapi.repositories.IUserRepository;
-import org.omg.CORBA.UserException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;

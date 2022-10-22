@@ -30,7 +30,6 @@ public class UserRestService {
     @PostMapping(path = "/register")
     public ResponseEntity<User> register(@Valid @RequestBody RegisterDTO user) {
         return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
-
     }
 
     @PostMapping(path = "/authenticate")

@@ -133,8 +133,6 @@ public class UserService {
             trading.setBuyerId(userId);
         } catch (NoSuchElementException e){
             throw new UserValidation(DefinedError.NOT_FOUND.getErrorCode(), "User "+userId+DefinedError.NOT_FOUND.getErrorMessage());
-        } catch(NotFound e) {
-            throw new UserValidation(DefinedError.NOT_FOUND.getErrorCode(), "Trading " + userId + DefinedError.NOT_FOUND.getErrorMessage());
         }
     }
 
@@ -143,7 +141,7 @@ public class UserService {
         try {
             User canceller = findByID(cancellerId);
             Trading trading = tradingService.findByID(tradingId);
-            if (!Objects.equals(trading.getSellerId(), cancellerId) || !Objects.equals(trading.getBuyerId(), cancellerId)) { //User not authorized to cancel the trading
+            if (!Objects.equals(trading.getSellerId(), cancellerId) && !Objects.equals(trading.getBuyerId(), cancellerId)) { //User not authorized to cancel the trading
                 throw new UserValidation(DefinedError.FORBIDDEN_ACTION.getErrorCode(), "User " + cancellerId + " not authorized to cancel the trading");
             } else if (trading.getBuyerId() != null) {  //If there is already a buyer then the canceller gets penalized
                 canceller.penalize();
@@ -152,8 +150,6 @@ public class UserService {
             return trading;
         } catch (NoSuchElementException e) {
             throw new UserValidation(DefinedError.NOT_FOUND.getErrorCode(), "User " + cancellerId + DefinedError.NOT_FOUND.getErrorMessage());
-        } catch (NotFound e) {
-            throw  new UserValidation(DefinedError.NOT_FOUND.getErrorCode(), "Trading  "+tradingId+DefinedError.NOT_FOUND.getErrorMessage());
         }
     }
 
@@ -166,8 +162,6 @@ public class UserService {
             tradingService.updateTrading(trading);
         } catch(NoSuchElementException e){
             throw new UserValidation(DefinedError.NOT_FOUND.getErrorCode(), "User "+userId+DefinedError.NOT_FOUND.getErrorMessage());
-        } catch (NotFound e){
-            throw new UserValidation(DefinedError.NOT_FOUND.getErrorCode(), "Trading "+tradingId+DefinedError.NOT_FOUND.getErrorMessage());
         }
     }
 
@@ -200,8 +194,6 @@ public class UserService {
         } catch (UserValidation e) {
             tradingService.deleteById(trading.getIdOperation());
             throw new UserValidation(DefinedError.OUT_OF_RANGE_COTIZATION.getErrorCode(),DefinedError.OUT_OF_RANGE_COTIZATION.getErrorMessage());
-        } catch (NotFound e){
-            throw new UserValidation(DefinedError.NOT_FOUND.getErrorCode(),"Trading "+tradingId+DefinedError.NOT_FOUND.getErrorMessage());
         }
     }
 

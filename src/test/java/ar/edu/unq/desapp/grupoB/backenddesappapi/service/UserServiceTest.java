@@ -81,9 +81,6 @@ public class UserServiceTest {
     @Mock
     private LocalDateTime anyLocalTime;
 
-    //private RegisterDTO realUser =  new RegisterDTO("anyname", "anylastname", "any@email.com", "anyadress", "anyp4s5w","438327496","uh32y3");
-
-
     @Mock
     private CreateTransactionDTO anyTransactionDTO;
 

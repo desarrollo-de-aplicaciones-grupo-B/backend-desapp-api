@@ -30,7 +30,7 @@ public class ControllerLogging {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         String log = "Method: " +signature.getName() + " >>>";
         for(Object arg : joinPoint.getArgs()){
-            log+= "  ARGS: "+ arg;
+            log+= "  ARG: "+ arg;
         }
         LogManager.getLogger(signature.getDeclaringTypeName()).info(log);
     }
@@ -44,7 +44,6 @@ public class ControllerLogging {
     }
     @AfterThrowing(pointcut = "allRequest()", throwing = "exception")
     public void afterFailing(JoinPoint joinPoint, Exception exception){
-        logger.log(Level.INFO,"Status: "+joinPoint.getTarget());
         logger.error("ERROR: "+exception.getMessage());
     }
 

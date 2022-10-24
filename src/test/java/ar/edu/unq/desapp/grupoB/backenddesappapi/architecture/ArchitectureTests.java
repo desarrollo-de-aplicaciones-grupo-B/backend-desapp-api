@@ -31,6 +31,12 @@ public class ArchitectureTests {
     }
 
     @Test
+    public void restServiceClassesShouldEndWithRestService(){
+        classes().that().resideInAPackage("..webservices..")
+                .should().haveSimpleNameEndingWith("RestService").check(baseClasses);
+    }
+
+    @Test
     public void repositoryClassesShouldEndWithRepository(){
         classes().that().resideInAPackage("..repositories..")
                 .should().haveSimpleNameEndingWith("Repository").check(baseClasses);
